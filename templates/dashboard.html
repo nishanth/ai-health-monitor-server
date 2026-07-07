@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Health Monitor Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <h1>AI Health Monitor</h1>
+        <p>Live ESP32 patient monitoring dashboard</p>
+      </div>
+      <div id="connection" class="badge waiting">Waiting</div>
+    </header>
+
+    <section class="status-panel">
+      <div>
+        <span class="label">Current Status</span>
+        <strong id="status">WAITING</strong>
+      </div>
+      <div>
+        <span class="label">AI Risk Level</span>
+        <strong id="risk-level">WAITING</strong>
+      </div>
+      <div>
+        <span class="label">Last Update</span>
+        <strong id="received-at">No data yet</strong>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="metric">
+        <span>Heart Rate</span>
+        <strong id="heart-rate">--</strong>
+        <small>BPM</small>
+      </article>
+      <article class="metric">
+        <span>SpO2</span>
+        <strong id="spo2">--</strong>
+        <small>%</small>
+      </article>
+      <article class="metric">
+        <span>Temperature</span>
+        <strong id="temperature">--</strong>
+        <small>deg C</small>
+      </article>
+      <article class="metric">
+        <span>Motion</span>
+        <strong id="motion">--</strong>
+        <small>MPU6050</small>
+      </article>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <h2>AI Analysis</h2>
+        <p id="summary">Waiting for ESP32 data.</p>
+        <h3>Recommendations</h3>
+        <ul id="recommendations"></ul>
+      </article>
+
+      <article class="panel">
+        <h2>Location</h2>
+        <p id="coords">No GPS data yet.</p>
+        <a id="map-link" class="button disabled" href="#" target="_blank" rel="noreferrer">Open Map</a>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Alert History</h2>
+      <div id="history" class="history empty">No alerts received yet.</div>
+    </section>
+  </main>
+
+  <script>
+    const setText = (id, value) => {
+      document.getElementById(id).textContent = value ?? "--";
+    };
+
+    const formatTime = (value) => {
+      if (!value) return "No data yet";
+      return new Date(value).toLocaleString();
+    };
+
+    async function loadDashboard() {
+      try {
+        const response = await fetch("/api/latest");
+        const payload = await response.json();
+        const data = payload.data || {};
+        const analysis = payload.analysis || {};
+        const history = payload.history || [];
+
+        setText("status", data.status || "WAITING");
+        setText("risk-level", analysis.risk_level || "WAITING");
+        setText("received-at", formatTime(data.received_at));
+        setText("heart-rate", data.heart_rate);
+        setText("spo2", data.spo2);
+        setText("temperature", data.temperature);
+        setText("motion", data.mpu_ready === false ? "ERROR" : data.fall_detected ? "FALL" : "OK");
+        setText("summary", analysis.summary || "Waiting for ESP32 data.");
+        setText("coords", data.latitude && data.longitude ? `${data.latitude}, ${data.longitude}` : "No GPS data yet.");
+
+        const connection = document.getElementById("connection");
+        connection.textContent = data.received_at ? "Live" : "Waiting";
+        connection.className = data.received_at ? "badge live" : "badge waiting";
+
+        const mapLink = document.getElementById("map-link");
+        if (data.map_link) {
+          mapLink.href = data.map_link;
+          mapLink.classList.remove("disabled");
+        } else {
+          mapLink.href = "#";
+          mapLink.classList.add("disabled");
+        }
+
+        const recList = document.getElementById("recommendations");
+        recList.innerHTML = "";
+        (analysis.recommendations || []).forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          recList.appendChild(li);
+        });
+
+        const historyBox = document.getElementById("history");
+        historyBox.innerHTML = "";
+        historyBox.className = history.length ? "history" : "history empty";
+        if (!history.length) {
+          historyBox.textContent = "No alerts received yet.";
+        } else {
+          history.forEach((event) => {
+            const item = document.createElement("div");
+            item.className = "history-item";
+            item.innerHTML = `
+              <strong>${event.status} - ${event.risk_level}</strong>
+              <span>${formatTime(event.time)}</span>
+              <p>${event.summary}</p>
+              ${event.map_link ? `<a href="${event.map_link}" target="_blank" rel="noreferrer">Map</a>` : ""}
+            `;
+            historyBox.appendChild(item);
+          });
+        }
+      } catch (error) {
+        const connection = document.getElementById("connection");
+        connection.textContent = "Offline";
+        connection.className = "badge danger";
+      }
+    }
+
+    loadDashboard();
+    setInterval(loadDashboard, 3000);
+  </script>
+</body>
+</html>
