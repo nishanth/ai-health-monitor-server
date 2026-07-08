@@ -1,170 +1,2367 @@
-* {
-  box-sizing: border-box;
+/* ==========================================================
+   AI BASED SMART HEALTH MONITORING SYSTEM
+   Dashboard Version 2.0
+========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================================
+   ROOT COLORS
+========================================================== */
+
+:root{
+
+--primary:#2563eb;
+
+--secondary:#06b6d4;
+
+--success:#10b981;
+
+--warning:#f59e0b;
+
+--danger:#ef4444;
+
+--dark:#0f172a;
+
+--card:#ffffff;
+
+--text:#1f2937;
+
+--shadow:0 12px 30px rgba(0,0,0,.15);
+
+--radius:20px;
+
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f7fb;
-  color: #172033;
+
+/* ==========================================================
+   BODY
+========================================================== */
+
+*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+font-family:'Poppins',sans-serif;
+
 }
 
-.shell {
-  width: min(1120px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 28px 0;
+body{
+
+background:
+
+linear-gradient(135deg,#dbeafe,#eff6ff,#e0f2fe);
+
+background-size:400% 400%;
+
+animation:bgMove 15s ease infinite;
+
+color:var(--text);
+
+min-height:100vh;
+
+overflow-x:hidden;
+
 }
 
-.topbar,
-.status-panel,
-.grid,
-.split {
-  display: grid;
-  gap: 16px;
+@keyframes bgMove{
+
+0%{
+
+background-position:0% 50%;
+
 }
 
-.topbar {
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  margin-bottom: 18px;
+50%{
+
+background-position:100% 50%;
+
 }
 
-h1,
-h2,
-h3,
-p {
-  margin-top: 0;
+100%{
+
+background-position:0% 50%;
+
 }
 
-h1 {
-  margin-bottom: 6px;
-  font-size: 32px;
 }
 
-.topbar p {
-  margin-bottom: 0;
-  color: #667085;
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+::-webkit-scrollbar{
+
+width:10px;
+
 }
 
-.badge {
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-weight: 700;
+::-webkit-scrollbar-track{
+
+background:#dbeafe;
+
 }
 
-.badge.live {
-  background: #dcfce7;
-  color: #166534;
+::-webkit-scrollbar-thumb{
+
+background:var(--primary);
+
+border-radius:20px;
+
 }
 
-.badge.waiting {
-  background: #fef3c7;
-  color: #92400e;
+::-webkit-scrollbar-thumb:hover{
+
+background:#1d4ed8;
+
 }
 
-.badge.danger {
-  background: #fee2e2;
-  color: #991b1b;
+
+/* ==========================================================
+   HERO HEADER
+========================================================== */
+
+.hero-header{
+
+background:
+
+linear-gradient(120deg,#2563eb,#06b6d4,#3b82f6);
+
+padding:35px;
+
+color:#fff;
+
+box-shadow:var(--shadow);
+
+margin-bottom:30px;
+
+position:relative;
+
+overflow:hidden;
+
 }
 
-.status-panel {
-  grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 16px;
-  padding: 18px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+.hero-header::before{
+
+content:"";
+
+position:absolute;
+
+width:250px;
+
+height:250px;
+
+background:rgba(255,255,255,.15);
+
+border-radius:50%;
+
+top:-100px;
+
+right:-80px;
+
 }
 
-.label,
-.metric span {
-  display: block;
-  margin-bottom: 8px;
-  color: #667085;
-  font-size: 14px;
+.hero-header::after{
+
+content:"";
+
+position:absolute;
+
+width:180px;
+
+height:180px;
+
+background:rgba(255,255,255,.10);
+
+border-radius:50%;
+
+bottom:-70px;
+
+left:-70px;
+
 }
 
-.status-panel strong {
-  font-size: 20px;
+.project-title{
+
+font-size:38px;
+
+font-weight:800;
+
+letter-spacing:1px;
+
+margin-bottom:8px;
+
 }
 
-.grid {
-  grid-template-columns: repeat(4, 1fr);
-  margin-bottom: 16px;
+.project-subtitle{
+
+font-weight:400;
+
+opacity:.95;
+
 }
 
-.metric,
-.panel {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 18px;
+
+/* ==========================================================
+   LIVE CLOCK
+========================================================== */
+
+.live-clock{
+
+font-size:30px;
+
+font-weight:700;
+
+background:rgba(255,255,255,.15);
+
+padding:12px 18px;
+
+border-radius:15px;
+
+display:inline-block;
+
+backdrop-filter:blur(10px);
+
+margin-bottom:15px;
+
 }
 
-.metric strong {
-  display: block;
-  font-size: 36px;
+
+/* ==========================================================
+   STATUS BADGES
+========================================================== */
+
+.status-row{
+
+display:flex;
+
+gap:10px;
+
+flex-wrap:wrap;
+
+justify-content:flex-end;
+
 }
 
-.metric small {
-  color: #667085;
+.status-row .badge{
+
+padding:8px 14px;
+
+font-size:13px;
+
+border-radius:30px;
+
+font-weight:600;
+
 }
 
-.split {
-  grid-template-columns: 2fr 1fr;
-  margin-bottom: 16px;
+
+/* ==========================================================
+   STUDENT SECTION
+========================================================== */
+
+.student-section{
+
+margin-bottom:25px;
+
 }
 
-.button {
-  display: inline-block;
-  padding: 10px 14px;
-  border-radius: 6px;
-  background: #2563eb;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 700;
+.student-card{
+
+background:rgba(255,255,255,.70);
+
+backdrop-filter:blur(14px);
+
+border-radius:20px;
+
+padding:25px;
+
+box-shadow:var(--shadow);
+
+transition:.35s;
+
+border:1px solid rgba(255,255,255,.35);
+
+height:100%;
+
 }
 
-.button.disabled {
-  pointer-events: none;
-  background: #cbd5e1;
+.student-card:hover{
+
+transform:translateY(-6px);
+
+box-shadow:
+
+0 18px 35px rgba(0,0,0,.18);
+
 }
 
-ul {
-  padding-left: 20px;
-  margin-bottom: 0;
+.student-card h5{
+
+font-weight:700;
+
+margin-bottom:20px;
+
+color:var(--primary);
+
 }
 
-.history.empty {
-  color: #667085;
+.student-card table{
+
+margin-bottom:0;
+
 }
 
-.history-item {
-  border-top: 1px solid #e5e7eb;
-  padding: 12px 0;
+.student-card td{
+
+padding:8px;
+
+font-size:15px;
+
 }
 
-.history-item:first-child {
-  border-top: 0;
-  padding-top: 0;
+
+/* ==========================================================
+   SECTION TITLES
+========================================================== */
+
+h1,h2,h3,h4,h5,h6{
+
+font-weight:700;
+
 }
 
-.history-item span {
-  display: block;
-  margin: 4px 0;
-  color: #667085;
-  font-size: 13px;
+.text-muted{
+
+color:#6b7280!important;
+
 }
 
-.history-item p {
-  margin-bottom: 6px;
+
+/* ==========================================================
+   CONTAINER
+========================================================== */
+
+.container{
+
+max-width:1450px;
+
 }
 
-@media (max-width: 820px) {
-  .topbar,
-  .status-panel,
-  .grid,
-  .split {
-    grid-template-columns: 1fr;
-  }
+
+/* ==========================================================
+   ICON COLORS
+========================================================== */
+
+.fa-heart-pulse{
+
+color:#ff4d6d;
+
+}
+
+.fa-user-graduate{
+
+color:#2563eb;
+
+}
+
+.fa-microchip{
+
+color:#10b981;
+
+}
+
+.fa-robot{
+
+color:#7c3aed;
+
+}
+
+.fa-user-doctor{
+
+color:#2563eb;
+
+}
+
+.fa-location-dot{
+
+color:#ef4444;
+
+}
+
+
+/* ==========================================================
+   GLASS EFFECT
+========================================================== */
+
+.glass{
+
+background:rgba(255,255,255,.60);
+
+backdrop-filter:blur(18px);
+
+border-radius:20px;
+
+border:1px solid rgba(255,255,255,.30);
+
+box-shadow:var(--shadow);
+
+}
+/* ==========================================================
+   DASHBOARD CARDS
+========================================================== */
+
+.dashboard-card{
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(16px);
+
+border-radius:22px;
+
+padding:25px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+transition:.35s;
+
+border:1px solid rgba(255,255,255,.45);
+
+height:100%;
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.dashboard-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 22px 45px rgba(37,99,235,.20);
+
+}
+
+
+/* ==========================================================
+   PATIENT CARD
+========================================================== */
+
+.patient-card{
+
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+color:#fff;
+
+}
+
+.patient-card hr{
+
+border-color:rgba(255,255,255,.25);
+
+}
+
+.patient-icon{
+
+font-size:80px;
+
+margin-bottom:15px;
+
+color:#fff;
+
+}
+
+.patient-card h3{
+
+font-weight:700;
+
+margin-bottom:8px;
+
+}
+
+.patient-card table{
+
+color:#fff;
+
+}
+
+.patient-card td{
+
+border:none;
+
+padding:8px 0;
+
+}
+
+#patientLocation{
+
+padding:12px;
+
+background:rgba(255,255,255,.18);
+
+border-radius:12px;
+
+font-weight:600;
+
+}
+
+
+/* ==========================================================
+   VITAL CARDS
+========================================================== */
+
+.vital-card{
+
+color:#fff;
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.vital-card::before{
+
+content:"";
+
+position:absolute;
+
+width:180px;
+
+height:180px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.08);
+
+right:-70px;
+
+top:-70px;
+
+}
+
+
+/* ==========================================================
+   HEART RATE
+========================================================== */
+
+.heart-card{
+
+background:linear-gradient(135deg,#ef4444,#dc2626);
+
+}
+
+
+/* ==========================================================
+   SPO2
+========================================================== */
+
+.spo2-card{
+
+background:linear-gradient(135deg,#0ea5e9,#2563eb);
+
+}
+
+
+/* ==========================================================
+   TEMPERATURE
+========================================================== */
+
+.temp-card{
+
+background:linear-gradient(135deg,#f59e0b,#ea580c);
+
+}
+
+
+/* ==========================================================
+   HEALTH SCORE
+========================================================== */
+
+.score-card{
+
+background:linear-gradient(135deg,#10b981,#059669);
+
+}
+
+
+/* ==========================================================
+   CARD TEXT
+========================================================== */
+
+.vital-card h6{
+
+font-size:16px;
+
+font-weight:600;
+
+opacity:.95;
+
+}
+
+.vital-card h1{
+
+font-size:52px;
+
+font-weight:800;
+
+margin:12px 0;
+
+}
+
+.vital-card p{
+
+font-size:16px;
+
+margin:0;
+
+opacity:.95;
+
+}
+
+
+/* ==========================================================
+   ICONS
+========================================================== */
+
+.vital-icon{
+
+font-size:62px;
+
+opacity:.35;
+
+margin-top:10px;
+
+}
+
+
+/* ==========================================================
+   HEART ANIMATION
+========================================================== */
+
+.heartbeat{
+
+animation:heartbeat 1s infinite;
+
+}
+
+@keyframes heartbeat{
+
+0%{
+
+transform:scale(1);
+
+}
+
+25%{
+
+transform:scale(1.18);
+
+}
+
+50%{
+
+transform:scale(.95);
+
+}
+
+75%{
+
+transform:scale(1.12);
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+}
+
+
+/* ==========================================================
+   PROGRESS BAR
+========================================================== */
+
+.progress{
+
+height:10px;
+
+margin-top:18px;
+
+border-radius:20px;
+
+background:rgba(255,255,255,.25);
+
+overflow:hidden;
+
+}
+
+.progress-bar{
+
+border-radius:20px;
+
+transition:width .8s ease;
+
+}
+
+
+/* ==========================================================
+   STATUS CARDS
+========================================================== */
+
+.dashboard-card h2{
+
+font-size:34px;
+
+font-weight:700;
+
+margin-top:18px;
+
+}
+
+.dashboard-card h5{
+
+font-weight:700;
+
+margin-bottom:8px;
+
+}
+
+.dashboard-card i{
+
+margin-right:8px;
+
+}
+
+
+/* ==========================================================
+   STATUS COLORS
+========================================================== */
+
+.status-normal{
+
+color:#10b981;
+
+font-weight:700;
+
+}
+
+.status-warning{
+
+color:#f59e0b;
+
+font-weight:700;
+
+}
+
+.status-danger{
+
+color:#ef4444;
+
+font-weight:700;
+
+}
+
+
+/* ==========================================================
+   HEALTH SCORE NUMBER
+========================================================== */
+
+#healthScore{
+
+font-size:56px;
+
+font-weight:800;
+
+}
+
+#healthProgress{
+
+transition:width 1s ease;
+
+}
+
+
+/* ==========================================================
+   SMALL ANIMATION
+========================================================== */
+
+.dashboard-card{
+
+animation:fadeIn .7s ease;
+
+}
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+transform:translateY(25px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
+/* ==========================================================
+   GLOW EFFECT
+========================================================== */
+
+.heart-card:hover{
+
+box-shadow:0 0 35px rgba(239,68,68,.45);
+
+}
+
+.spo2-card:hover{
+
+box-shadow:0 0 35px rgba(14,165,233,.45);
+
+}
+
+.temp-card:hover{
+
+box-shadow:0 0 35px rgba(245,158,11,.45);
+
+}
+
+.score-card:hover{
+
+box-shadow:0 0 35px rgba(16,185,129,.45);
+
+}
+
+
+/* ==========================================================
+   BADGES
+========================================================== */
+
+.badge{
+
+font-size:13px;
+
+padding:8px 14px;
+
+border-radius:25px;
+
+font-weight:600;
+
+}
+/* ==========================================================
+   AI DOCTOR CARD
+========================================================== */
+
+.ai-card{
+
+background:linear-gradient(135deg,#4f46e5,#2563eb);
+
+color:#ffffff;
+
+}
+
+.ai-card h3{
+
+font-size:30px;
+
+font-weight:700;
+
+margin-bottom:10px;
+
+}
+
+.ai-card h4{
+
+font-size:28px;
+
+font-weight:700;
+
+margin-top:10px;
+
+color:#fef08a;
+
+}
+
+.ai-card p{
+
+font-size:16px;
+
+line-height:1.8;
+
+opacity:.95;
+
+}
+
+.ai-card hr{
+
+border-color:rgba(255,255,255,.20);
+
+}
+
+
+/* ==========================================================
+   AI CONFIDENCE BADGE
+========================================================== */
+
+#aiConfidence{
+
+font-size:15px;
+
+padding:10px 18px;
+
+border-radius:30px;
+
+font-weight:700;
+
+box-shadow:0 5px 15px rgba(0,0,0,.20);
+
+}
+
+
+/* ==========================================================
+   AI HEALTH SCORE
+========================================================== */
+
+#doctorHealthScore{
+
+font-size:58px;
+
+font-weight:800;
+
+color:#ffffff;
+
+margin-top:10px;
+
+}
+
+#healthMeter{
+
+font-size:28px;
+
+font-weight:700;
+
+color:#bbf7d0;
+
+}
+
+
+/* ==========================================================
+   MEDICAL REPORT CARD
+========================================================== */
+
+.report-card{
+
+background:linear-gradient(135deg,#ffffff,#f8fafc);
+
+}
+
+.report-card h3{
+
+color:#2563eb;
+
+font-weight:700;
+
+margin-bottom:15px;
+
+}
+
+.report-card table td{
+
+padding:12px;
+
+font-size:15px;
+
+}
+
+.report-card table tr{
+
+border-bottom:1px solid #e5e7eb;
+
+}
+
+
+/* ==========================================================
+   RECOMMENDATION CARD
+========================================================== */
+
+.list-group{
+
+border-radius:15px;
+
+overflow:hidden;
+
+}
+
+.list-group-item{
+
+border:none;
+
+margin-bottom:10px;
+
+border-radius:12px;
+
+padding:15px;
+
+font-weight:500;
+
+background:#eff6ff;
+
+transition:.30s;
+
+}
+
+.list-group-item:hover{
+
+transform:translateX(10px);
+
+background:#dbeafe;
+
+}
+
+
+/* ==========================================================
+   PRIORITY CARD
+========================================================== */
+
+#priorityList .list-group-item{
+
+background:#fff7ed;
+
+}
+
+#priorityList .list-group-item:hover{
+
+background:#ffedd5;
+
+}
+
+
+/* ==========================================================
+   RECOVERY PLAN
+========================================================== */
+
+.recovery-box{
+
+background:linear-gradient(145deg,#ffffff,#e0f2fe);
+
+padding:25px;
+
+border-radius:20px;
+
+font-size:20px;
+
+font-weight:700;
+
+text-align:center;
+
+transition:.35s;
+
+cursor:pointer;
+
+box-shadow:0 8px 20px rgba(0,0,0,.10);
+
+height:140px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+flex-direction:column;
+
+}
+
+.recovery-box:hover{
+
+transform:translateY(-10px);
+
+background:linear-gradient(135deg,#2563eb,#0ea5e9);
+
+color:#ffffff;
+
+}
+
+
+/* ==========================================================
+   TIMELINE
+========================================================== */
+
+.timeline{
+
+position:relative;
+
+margin-top:10px;
+
+}
+
+.timeline::before{
+
+content:"";
+
+position:absolute;
+
+left:20px;
+
+top:0;
+
+bottom:0;
+
+width:4px;
+
+background:#2563eb;
+
+border-radius:20px;
+
+}
+
+.timeline-item{
+
+display:flex;
+
+margin-bottom:30px;
+
+position:relative;
+
+}
+
+.timeline-icon{
+
+width:42px;
+
+height:42px;
+
+border-radius:50%;
+
+background:#2563eb;
+
+color:#ffffff;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-weight:700;
+
+margin-right:20px;
+
+box-shadow:0 6px 15px rgba(37,99,235,.30);
+
+z-index:10;
+
+}
+
+.timeline-item h6{
+
+font-weight:700;
+
+margin-bottom:5px;
+
+color:#2563eb;
+
+}
+
+.timeline-item p{
+
+margin-bottom:0;
+
+color:#475569;
+
+}
+
+
+/* ==========================================================
+   EMERGENCY BANNER
+========================================================== */
+
+#emergencyBanner{
+
+border-radius:20px;
+
+padding:30px;
+
+font-weight:700;
+
+animation:emergencyBlink 1.2s infinite;
+
+display:none;
+
+box-shadow:0 10px 30px rgba(239,68,68,.40);
+
+}
+
+#emergencyBanner h1{
+
+font-size:42px;
+
+margin-bottom:15px;
+
+}
+
+#emergencyMessage{
+
+font-size:24px;
+
+}
+
+@keyframes emergencyBlink{
+
+0%{
+
+background:#dc2626;
+
+}
+
+50%{
+
+background:#ef4444;
+
+}
+
+100%{
+
+background:#dc2626;
+
+}
+
+}
+
+
+/* ==========================================================
+   HEALTH METER COLORS
+========================================================== */
+
+.health-excellent{
+
+color:#10b981;
+
+}
+
+.health-good{
+
+color:#22c55e;
+
+}
+
+.health-fair{
+
+color:#f59e0b;
+
+}
+
+.health-poor{
+
+color:#f97316;
+
+}
+
+.health-critical{
+
+color:#ef4444;
+
+}
+
+
+/* ==========================================================
+   REPORT BADGES
+========================================================== */
+
+#reportRisk{
+
+padding:8px 16px;
+
+font-size:14px;
+
+font-weight:700;
+
+border-radius:30px;
+
+}
+
+
+/* ==========================================================
+   AI CARD ANIMATION
+========================================================== */
+
+.ai-card{
+
+animation:doctorFade .8s ease;
+
+}
+
+@keyframes doctorFade{
+
+0%{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
+/* ==========================================================
+   PREDICTION BOX
+========================================================== */
+
+#futurePrediction{
+
+font-size:17px;
+
+font-weight:500;
+
+line-height:1.8;
+
+background:rgba(255,255,255,.12);
+
+padding:15px;
+
+border-radius:12px;
+
+margin-top:10px;
+
+}
+
+#nextAction{
+
+font-size:17px;
+
+font-weight:600;
+
+background:rgba(255,255,255,.12);
+
+padding:15px;
+
+border-radius:12px;
+
+margin-top:10px;
+
+}
+/* ==========================================================
+   GOOGLE MAP
+========================================================== */
+
+#googleMap{
+
+width:100%;
+
+height:360px;
+
+border:none;
+
+border-radius:18px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+transition:.35s;
+
+}
+
+#googleMap:hover{
+
+transform:scale(1.01);
+
+}
+
+#mapButton{
+
+border-radius:30px;
+
+padding:10px 20px;
+
+font-weight:600;
+
+}
+
+
+/* ==========================================================
+   SYSTEM STATUS CARD
+========================================================== */
+
+.table{
+
+margin-bottom:0;
+
+}
+
+.table td{
+
+vertical-align:middle;
+
+padding:12px;
+
+font-size:15px;
+
+}
+
+.table tr{
+
+transition:.30s;
+
+}
+
+.table tr:hover{
+
+background:#eff6ff;
+
+}
+
+.table .badge{
+
+font-size:13px;
+
+padding:8px 16px;
+
+border-radius:25px;
+
+}
+
+
+/* ==========================================================
+   HEALTH STATISTICS
+========================================================== */
+
+.stats-box{
+
+background:linear-gradient(135deg,#ffffff,#eff6ff);
+
+border-radius:20px;
+
+padding:25px;
+
+transition:.35s;
+
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.stats-box:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 15px 35px rgba(37,99,235,.18);
+
+}
+
+.stats-box h1{
+
+font-size:52px;
+
+font-weight:800;
+
+margin-bottom:8px;
+
+color:#2563eb;
+
+}
+
+.stats-box h6{
+
+font-size:17px;
+
+font-weight:600;
+
+color:#475569;
+
+}
+
+
+/* ==========================================================
+   SENSOR STATUS
+========================================================== */
+
+.sensor-table td{
+
+font-size:15px;
+
+padding:12px;
+
+}
+
+.sensor-online{
+
+color:#10b981;
+
+font-weight:700;
+
+}
+
+.sensor-offline{
+
+color:#ef4444;
+
+font-weight:700;
+
+}
+
+.sensor-warning{
+
+color:#f59e0b;
+
+font-weight:700;
+
+}
+
+
+/* ==========================================================
+   HISTORY
+========================================================== */
+
+#historyContainer{
+
+height:280px;
+
+overflow-y:auto;
+
+padding-right:8px;
+
+}
+
+.history-item{
+
+padding:14px;
+
+margin-bottom:12px;
+
+border-radius:15px;
+
+background:#ffffff;
+
+box-shadow:0 6px 15px rgba(0,0,0,.08);
+
+border-left:6px solid #10b981;
+
+transition:.30s;
+
+}
+
+.history-item:hover{
+
+transform:translateX(8px);
+
+}
+
+.history-normal{
+
+border-left-color:#10b981;
+
+}
+
+.history-warning{
+
+border-left-color:#f59e0b;
+
+}
+
+.history-danger{
+
+border-left-color:#ef4444;
+
+}
+
+
+/* ==========================================================
+   CHART AREA
+========================================================== */
+
+canvas{
+
+background:#ffffff;
+
+border-radius:18px;
+
+padding:15px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+margin-top:10px;
+
+}
+
+.chart-title{
+
+font-size:18px;
+
+font-weight:700;
+
+margin-bottom:15px;
+
+color:#2563eb;
+
+}
+
+
+/* ==========================================================
+   HEALTH METER
+========================================================== */
+
+.health-circle{
+
+width:220px;
+
+height:220px;
+
+margin:auto;
+
+border-radius:50%;
+
+background:
+
+conic-gradient(
+
+#10b981 0deg,
+
+#10b981 320deg,
+
+#e5e7eb 320deg
+
+);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+box-shadow:0 15px 30px rgba(0,0,0,.15);
+
+}
+
+#healthCircle{
+
+width:170px;
+
+height:170px;
+
+background:#ffffff;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:42px;
+
+font-weight:800;
+
+color:#2563eb;
+
+}
+
+
+/* ==========================================================
+   HOSPITAL INFORMATION
+========================================================== */
+
+.hospital-box{
+
+background:linear-gradient(135deg,#ffffff,#f8fafc);
+
+padding:25px;
+
+border-radius:18px;
+
+text-align:center;
+
+transition:.35s;
+
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+height:180px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+}
+
+.hospital-box:hover{
+
+transform:translateY(-10px);
+
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+color:#ffffff;
+
+}
+
+.hospital-box h5{
+
+font-size:22px;
+
+margin:10px 0;
+
+font-weight:700;
+
+}
+
+.hospital-box p{
+
+font-size:17px;
+
+font-weight:600;
+
+}
+
+
+/* ==========================================================
+   STATUS COLORS
+========================================================== */
+
+.bg-online{
+
+background:#10b981!important;
+
+color:#fff;
+
+}
+
+.bg-warning-status{
+
+background:#f59e0b!important;
+
+color:#fff;
+
+}
+
+.bg-danger-status{
+
+background:#ef4444!important;
+
+color:#fff;
+
+}
+
+
+/* ==========================================================
+   CARD HEADINGS
+========================================================== */
+
+.dashboard-card h3{
+
+font-size:26px;
+
+font-weight:700;
+
+margin-bottom:15px;
+
+color:#1e3a8a;
+
+}
+
+.dashboard-card h3 i{
+
+margin-right:8px;
+
+}
+
+
+/* ==========================================================
+   CHART ANIMATION
+========================================================== */
+
+canvas{
+
+animation:chartFade .8s ease;
+
+}
+
+@keyframes chartFade{
+
+0%{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
+/* ==========================================================
+   FLOAT ANIMATION
+========================================================== */
+
+.stats-box,
+
+.hospital-box,
+
+.dashboard-card{
+
+animation:floatCard 5s ease-in-out infinite;
+
+}
+
+@keyframes floatCard{
+
+0%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-3px);
+
+}
+
+100%{
+
+transform:translateY(0);
+
+}
+
+}
+/* ==========================================================
+   ADVANCED HEART ANIMATION
+========================================================== */
+
+.heartbeat{
+
+animation:heartBeat 1s infinite;
+
+transform-origin:center;
+
+}
+
+@keyframes heartBeat{
+
+0%{transform:scale(1);}
+
+20%{transform:scale(1.18);}
+
+40%{transform:scale(.95);}
+
+60%{transform:scale(1.15);}
+
+80%{transform:scale(1);}
+
+100%{transform:scale(1);}
+
+}
+
+
+/* ==========================================================
+   GLOW EFFECTS
+========================================================== */
+
+.dashboard-card:hover{
+
+box-shadow:
+
+0 15px 35px rgba(37,99,235,.18),
+
+0 0 25px rgba(37,99,235,.15);
+
+}
+
+.ai-card:hover{
+
+box-shadow:
+
+0 20px 40px rgba(79,70,229,.35);
+
+}
+
+.patient-card:hover{
+
+box-shadow:
+
+0 20px 40px rgba(37,99,235,.35);
+
+}
+
+
+/* ==========================================================
+   EMERGENCY OVERLAY
+========================================================== */
+
+.emergency-overlay{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(220,38,38,.15);
+
+display:none;
+
+z-index:9998;
+
+animation:overlayBlink 1s infinite;
+
+pointer-events:none;
+
+}
+
+@keyframes overlayBlink{
+
+0%{
+
+background:rgba(220,38,38,.08);
+
+}
+
+50%{
+
+background:rgba(220,38,38,.18);
+
+}
+
+100%{
+
+background:rgba(220,38,38,.08);
+
+}
+
+}
+
+
+/* ==========================================================
+   LOADING SPINNER
+========================================================== */
+
+.loader{
+
+width:55px;
+
+height:55px;
+
+border:6px solid #dbeafe;
+
+border-top:6px solid #2563eb;
+
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+
+margin:auto;
+
+}
+
+@keyframes spin{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+.btn{
+
+border-radius:30px;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+.btn:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 8px 18px rgba(0,0,0,.15);
+
+}
+
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+.table-hover tbody tr:hover{
+
+background:#eff6ff;
+
+transition:.25s;
+
+}
+
+
+/* ==========================================================
+   BADGES
+========================================================== */
+
+.badge{
+
+letter-spacing:.5px;
+
+}
+
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+footer{
+
+margin-top:40px;
+
+padding:20px;
+
+text-align:center;
+
+color:#64748b;
+
+font-size:14px;
+
+}
+
+
+/* ==========================================================
+   FADE ANIMATION
+========================================================== */
+
+.fade-up{
+
+animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(25px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
+/* ==========================================================
+   ICON ROTATION
+========================================================== */
+
+.rotate:hover{
+
+transform:rotate(360deg);
+
+transition:1s;
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media(max-width:1200px){
+
+.project-title{
+
+font-size:30px;
+
+}
+
+.vital-card h1{
+
+font-size:42px;
+
+}
+
+.health-circle{
+
+width:180px;
+
+height:180px;
+
+}
+
+#healthCircle{
+
+width:140px;
+
+height:140px;
+
+font-size:32px;
+
+}
+
+}
+
+
+@media(max-width:992px){
+
+.status-row{
+
+justify-content:center;
+
+margin-top:15px;
+
+}
+
+.live-clock{
+
+margin-top:15px;
+
+}
+
+.patient-card{
+
+margin-bottom:20px;
+
+}
+
+.dashboard-card{
+
+margin-bottom:20px;
+
+}
+
+.project-title{
+
+text-align:center;
+
+font-size:28px;
+
+}
+
+.project-subtitle{
+
+text-align:center;
+
+}
+
+}
+
+
+@media(max-width:768px){
+
+.project-title{
+
+font-size:24px;
+
+}
+
+.project-subtitle{
+
+font-size:16px;
+
+}
+
+.vital-card h1{
+
+font-size:34px;
+
+}
+
+.patient-icon{
+
+font-size:60px;
+
+}
+
+.dashboard-card{
+
+padding:18px;
+
+}
+
+.health-circle{
+
+width:160px;
+
+height:160px;
+
+}
+
+#healthCircle{
+
+width:120px;
+
+height:120px;
+
+font-size:28px;
+
+}
+
+.timeline::before{
+
+left:16px;
+
+}
+
+.timeline-icon{
+
+width:36px;
+
+height:36px;
+
+font-size:14px;
+
+}
+
+.stats-box h1{
+
+font-size:34px;
+
+}
+
+}
+
+
+@media(max-width:576px){
+
+.project-title{
+
+font-size:20px;
+
+}
+
+.project-subtitle{
+
+font-size:14px;
+
+}
+
+.live-clock{
+
+font-size:20px;
+
+}
+
+.student-card{
+
+padding:18px;
+
+}
+
+.dashboard-card{
+
+padding:15px;
+
+}
+
+.vital-card h1{
+
+font-size:28px;
+
+}
+
+.dashboard-card h3{
+
+font-size:20px;
+
+}
+
+.health-circle{
+
+width:140px;
+
+height:140px;
+
+}
+
+#healthCircle{
+
+width:105px;
+
+height:105px;
+
+font-size:22px;
+
+}
+
+}
+
+
+/* ==========================================================
+   PRINT MODE
+========================================================== */
+
+@media print{
+
+.hero-header{
+
+background:#2563eb!important;
+
+color:#fff!important;
+
+}
+
+.dashboard-card{
+
+box-shadow:none;
+
+border:1px solid #ccc;
+
+break-inside:avoid;
+
+}
+
+body{
+
+background:#fff;
+
+}
+
 }
