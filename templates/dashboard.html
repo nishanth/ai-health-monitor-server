@@ -1,276 +1,2522 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Health Monitor Dashboard</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Health Monitoring Dashboard</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 <body>
-  <main class="shell">
-    <section class="hero">
-      <div class="hero-copy">
-        <span class="eyebrow">ESP32 Live Medical Intelligence</span>
-        <h1>AI Health Monitor Dashboard</h1>
-        <p>Real-time vitals, fall detection, SOS tracking, GPS location, and AI-based emergency interpretation.</p>
-      </div>
-      <div class="hero-status">
-        <div id="connection" class="connection waiting">Waiting</div>
-        <span id="received-at">No data yet</span>
-      </div>
-    </section>
 
-    <section class="overview">
-      <article class="status-card primary">
-        <span class="label">Current Status</span>
-        <strong id="status">WAITING</strong>
-        <small>Device reported condition</small>
-      </article>
-      <article class="status-card">
-        <span class="label">AI Risk Level</span>
-        <strong id="risk-level">WAITING</strong>
-        <small id="emergency-type">Awaiting sensor stream</small>
-      </article>
-      <article class="status-card">
-        <span class="label">AI Confidence</span>
-        <strong id="confidence">--</strong>
-        <small>Based on sensor availability</small>
-      </article>
-      <article class="status-card">
-        <span class="label">Risk Score</span>
-        <strong><span id="risk-score">0</span>/10</strong>
-        <div class="score-track"><span id="score-fill"></span></div>
-      </article>
-    </section>
+<!-- ================= BACKGROUND ================= -->
 
-    <section class="vitals">
-      <article class="metric" id="heart-card">
-        <span>Heart Rate</span>
-        <strong id="heart-rate">--</strong>
-        <small>BPM</small>
-        <p id="heart-note">Waiting for data</p>
-      </article>
-      <article class="metric" id="spo2-card">
-        <span>SpO2</span>
-        <strong id="spo2">--</strong>
-        <small>%</small>
-        <p id="spo2-note">Waiting for data</p>
-      </article>
-      <article class="metric" id="temp-card">
-        <span>Temperature</span>
-        <strong id="temperature">--</strong>
-        <small>deg C</small>
-        <p id="temperature-note">Waiting for data</p>
-      </article>
-      <article class="metric" id="motion-card">
-        <span>Motion Sensor</span>
-        <strong id="motion">--</strong>
-        <small>MPU6050</small>
-        <p id="motion-note">Waiting for data</p>
-      </article>
-    </section>
+<div class="background">
 
-    <section class="content-grid">
-      <article class="panel ai-panel">
-        <div class="panel-head">
-          <div>
-            <span class="label">AI Analysis</span>
-            <h2>Health Intelligence Summary</h2>
-          </div>
-          <span id="analysis-pill" class="pill neutral">Waiting</span>
-        </div>
-        <p id="summary" class="summary">Waiting for ESP32 data.</p>
+    <div class="gradient1"></div>
+    <div class="gradient2"></div>
 
-        <div class="analysis-columns">
-          <div>
-            <h3>Priority Actions</h3>
-            <ul id="priority-actions"></ul>
-          </div>
-          <div>
-            <h3>Recommendations</h3>
-            <ul id="recommendations"></ul>
-          </div>
+    <div class="grid-overlay"></div>
+
+    <div class="particles">
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+</div>
+
+<!-- ================= MAIN CONTAINER ================= -->
+
+<div class="container">
+
+<!-- ==================================================
+                HEADER
+=================================================== -->
+
+<header class="top-header">
+
+    <div class="header-left">
+
+        <div class="logo-box">
+
+            <i class="fa-solid fa-heart-pulse heartbeat"></i>
+
         </div>
 
-        <h3>AI Observations</h3>
-        <div id="observations" class="chip-list"></div>
-      </article>
-
-      <aside class="panel location-panel">
-        <span class="label">Location</span>
-        <h2>GPS Tracking</h2>
-        <p id="coords">No GPS data yet.</p>
-        <a id="map-link" class="button disabled" href="#" target="_blank" rel="noreferrer">Open Live Map</a>
-
-        <div class="mini-stats">
-          <div>
-            <span>Acceleration</span>
-            <strong id="acc-magnitude">--</strong>
-          </div>
-          <div>
-            <span>Gyro</span>
-            <strong id="gyro-magnitude">--</strong>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head">
         <div>
-          <span class="label">Emergency Timeline</span>
-          <h2>Alert History</h2>
+
+            <h1>
+
+                AI HEALTH MONITORING SYSTEM
+
+            </h1>
+
+            <h3>
+
+                Real-Time Smart Patient Monitoring using ESP32 & Artificial Intelligence
+
+            </h3>
+
         </div>
-        <span class="pill neutral" id="history-count">0 alerts</span>
-      </div>
-      <div id="history" class="history empty">No alerts received yet.</div>
-    </section>
 
-    <footer class="developer">
-      <span>Developed by</span>
-      <strong>Danny Joel</strong>
-      <p>Nanjil Catholic School CBSE, Vazhuthalampallam, Kanyakumari District</p>
-    </footer>
-  </main>
+    </div>
 
-  <script>
-    const setText = (id, value) => {
-      document.getElementById(id).textContent = value ?? "--";
-    };
+    <div class="header-right">
 
-    const formatTime = (value) => {
-      if (!value) return "No data yet";
-      return new Date(value).toLocaleString();
-    };
+        <div id="connection" class="live-status">
 
-    const stateClass = (state) => {
-      if (state === "danger") return "danger";
-      if (state === "warning") return "warning";
-      return "normal";
-    };
+            <span class="live-dot"></span>
 
-    const setCardState = (id, state) => {
-      const element = document.getElementById(id);
-      element.classList.remove("normal", "warning", "danger");
-      element.classList.add(stateClass(state));
-    };
+            LIVE
 
-    const renderList = (id, items) => {
-      const list = document.getElementById(id);
-      list.innerHTML = "";
-      (items || []).forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        list.appendChild(li);
-      });
-    };
+        </div>
 
-    const renderChips = (id, items) => {
-      const box = document.getElementById(id);
-      box.innerHTML = "";
-      (items || []).forEach((item) => {
-        const chip = document.createElement("span");
-        chip.textContent = item;
-        box.appendChild(chip);
-      });
-    };
+        <div class="time-box">
 
-    const setRiskTheme = (risk) => {
-      const pill = document.getElementById("analysis-pill");
-      const level = (risk || "WAITING").toLowerCase();
-      pill.textContent = risk || "Waiting";
-      pill.className = `pill ${level}`;
-      document.body.dataset.risk = level;
-    };
+            <i class="fa-solid fa-clock"></i>
 
-    async function loadDashboard() {
-      try {
-        const response = await fetch("/api/latest");
-        const payload = await response.json();
-        const data = payload.data || {};
-        const analysis = payload.analysis || {};
-        const history = payload.history || [];
-        const vitals = analysis.vitals || {};
+            <span id="received-at">
 
-        const score = Number(analysis.risk_score || 0);
-        const scoreWidth = Math.min(100, Math.max(0, score * 10));
+                Waiting for Device...
 
-        setText("status", data.status || "WAITING");
-        setText("risk-level", analysis.risk_level || "WAITING");
-        setText("emergency-type", analysis.emergency_type || "Awaiting sensor stream");
-        setText("confidence", analysis.confidence || "--");
-        setText("risk-score", score);
-        document.getElementById("score-fill").style.width = `${scoreWidth}%`;
-        setText("received-at", formatTime(data.received_at));
-        setText("heart-rate", data.heart_rate);
-        setText("spo2", data.spo2);
-        setText("temperature", data.temperature);
-        setText("motion", data.mpu_ready === false ? "ERROR" : data.fall_detected ? "FALL" : "OK");
-        setText("summary", analysis.summary || "Waiting for ESP32 data.");
-        setText("coords", data.latitude && data.longitude ? `${data.latitude}, ${data.longitude}` : "No GPS data yet.");
-        setText("acc-magnitude", data.acc_magnitude !== undefined ? `${data.acc_magnitude} g` : "--");
-        setText("gyro-magnitude", data.gyro_magnitude !== undefined ? `${data.gyro_magnitude} dps` : "--");
+            </span>
 
-        setText("heart-note", vitals.heart_rate?.text || "Waiting for data");
-        setText("spo2-note", vitals.spo2?.text || "Waiting for data");
-        setText("temperature-note", vitals.temperature?.text || "Waiting for data");
-        setText("motion-note", vitals.motion?.text || "Waiting for data");
+        </div>
 
-        setCardState("heart-card", vitals.heart_rate?.state || "normal");
-        setCardState("spo2-card", vitals.spo2?.state || "normal");
-        setCardState("temp-card", vitals.temperature?.state || "normal");
-        setCardState("motion-card", vitals.motion?.state || "normal");
-        setRiskTheme(analysis.risk_level);
+    </div>
 
-        const connection = document.getElementById("connection");
-        connection.textContent = data.received_at ? "Live Stream" : "Waiting";
-        connection.className = data.received_at ? "connection live" : "connection waiting";
+</header>
 
-        const mapLink = document.getElementById("map-link");
-        if (data.map_link) {
-          mapLink.href = data.map_link;
-          mapLink.classList.remove("disabled");
-        } else {
-          mapLink.href = "#";
-          mapLink.classList.add("disabled");
-        }
+<!-- ================= ECG LINE ================= -->
 
-        renderList("priority-actions", analysis.priority_actions);
-        renderList("recommendations", analysis.recommendations);
-        renderChips("observations", analysis.observations);
+<div class="ecg-container">
 
-        const historyBox = document.getElementById("history");
-        const historyCount = document.getElementById("history-count");
-        historyCount.textContent = `${history.length} alerts`;
-        historyBox.innerHTML = "";
-        historyBox.className = history.length ? "history" : "history empty";
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
 
-        if (!history.length) {
-          historyBox.textContent = "No alerts received yet.";
-        } else {
-          history.forEach((event) => {
-            const item = document.createElement("div");
-            item.className = "history-item";
-            item.innerHTML = `
-              <div>
-                <strong>${event.status} - ${event.risk_level}</strong>
-                <span>${formatTime(event.time)}</span>
-                <p>${event.summary}</p>
-              </div>
-              ${event.map_link ? `<a href="${event.map_link}" target="_blank" rel="noreferrer">Map</a>` : ""}
-            `;
-            historyBox.appendChild(item);
-          });
-        }
-      } catch (error) {
-        const connection = document.getElementById("connection");
-        connection.textContent = "Offline";
-        connection.className = "connection offline";
-      }
-    }
+        <path class="ecg-line"
+            d="M0,60
+               L120,60
+               L150,60
+               L170,20
+               L190,100
+               L210,60
+               L350,60
+               L380,60
+               L410,25
+               L430,95
+               L450,60
+               L620,60
+               L650,60
+               L670,30
+               L690,100
+               L710,60
+               L900,60
+               L930,60
+               L950,18
+               L970,100
+               L990,60
+               L1200,60">
 
-    loadDashboard();
-    setInterval(loadDashboard, 3000);
-  </script>
+        </path>
+
+    </svg>
+
+</div>
+
+<!-- ==================================================
+          SCHOOL INFORMATION
+=================================================== -->
+
+<div class="school-banner">
+
+    <div class="school-left">
+
+        <i class="fa-solid fa-user-graduate"></i>
+
+        <div>
+
+            <h2>
+
+                Developed by Danny Joel
+
+            </h2>
+
+            <p>
+
+                Nanjil Catholic School CBSE
+
+            </p>
+
+            <p>
+
+                Vazhuthalampallam, Kanyakumari District
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="school-right">
+
+        <div class="badge">
+
+            AI Powered
+
+        </div>
+
+        <div class="badge">
+
+            ESP32
+
+        </div>
+
+        <div class="badge">
+
+            IoT
+
+        </div>
+
+        <div class="badge">
+
+            Healthcare
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==================================================
+        SECTION 2 STARTS HERE
+=================================================== -->
+<!-- ==================================================
+                OVERVIEW DASHBOARD
+=================================================== -->
+
+<section class="overview-grid">
+
+    <!-- ================= HEART RATE ================= -->
+
+    <div class="glass-card vital-card heart-card" id="heart-card">
+
+        <div class="card-icon">
+
+            <i class="fa-solid fa-heart-pulse heartbeat"></i>
+
+        </div>
+
+        <div class="card-content">
+
+            <span class="card-title">
+                Heart Rate
+            </span>
+
+            <h2 id="heart-rate">
+                --
+            </h2>
+
+            <span class="unit">
+                BPM
+            </span>
+
+            <p id="heart-note">
+                Waiting for data
+            </p>
+
+        </div>
+
+        <div class="card-wave"></div>
+
+    </div>
+
+    <!-- ================= SpO2 ================= -->
+
+    <div class="glass-card vital-card spo2-card" id="spo2-card">
+
+        <div class="card-icon">
+
+            <i class="fa-solid fa-droplet"></i>
+
+        </div>
+
+        <div class="card-content">
+
+            <span class="card-title">
+                Blood Oxygen
+            </span>
+
+            <h2 id="spo2">
+                --
+            </h2>
+
+            <span class="unit">
+                %
+            </span>
+
+            <p id="spo2-note">
+                Waiting for data
+            </p>
+
+        </div>
+
+        <div class="card-wave"></div>
+
+    </div>
+
+    <!-- ================= TEMPERATURE ================= -->
+
+    <div class="glass-card vital-card temp-card" id="temp-card">
+
+        <div class="card-icon">
+
+            <i class="fa-solid fa-temperature-three-quarters"></i>
+
+        </div>
+
+        <div class="card-content">
+
+            <span class="card-title">
+                Temperature
+            </span>
+
+            <h2 id="temperature">
+                --
+            </h2>
+
+            <span class="unit">
+                °C
+            </span>
+
+            <p id="temperature-note">
+                Waiting for data
+            </p>
+
+        </div>
+
+        <div class="card-wave"></div>
+
+    </div>
+
+    <!-- ================= MOTION ================= -->
+
+    <div class="glass-card vital-card motion-card" id="motion-card">
+
+        <div class="card-icon">
+
+            <i class="fa-solid fa-person-falling"></i>
+
+        </div>
+
+        <div class="card-content">
+
+            <span class="card-title">
+                Fall Detection
+            </span>
+
+            <h2 id="motion">
+                --
+            </h2>
+
+            <span class="unit">
+                MPU6050
+            </span>
+
+            <p id="motion-note">
+                Waiting for data
+            </p>
+
+        </div>
+
+        <div class="card-wave"></div>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+            AI STATUS CARDS
+=================================================== -->
+
+<section class="status-grid">
+
+    <!-- AI RISK -->
+
+    <div class="glass-card status-card">
+
+        <div class="status-header">
+
+            <i class="fa-solid fa-brain"></i>
+
+            <span>
+                AI Risk Level
+            </span>
+
+        </div>
+
+        <h2 id="risk-level">
+            WAITING
+        </h2>
+
+        <div id="analysis-pill" class="risk-pill">
+
+            Waiting
+
+        </div>
+
+    </div>
+
+    <!-- CURRENT STATUS -->
+
+    <div class="glass-card status-card">
+
+        <div class="status-header">
+
+            <i class="fa-solid fa-stethoscope"></i>
+
+            <span>
+                Patient Status
+            </span>
+
+        </div>
+
+        <h2 id="status">
+
+            WAITING
+
+        </h2>
+
+        <small>
+
+            Live Device Condition
+
+        </small>
+
+    </div>
+
+    <!-- AI CONFIDENCE -->
+
+    <div class="glass-card status-card">
+
+        <div class="status-header">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <span>
+                AI Confidence
+            </span>
+
+        </div>
+
+        <h2 id="confidence">
+
+            --
+
+        </h2>
+
+        <small>
+
+            Prediction Accuracy
+
+        </small>
+
+    </div>
+
+    <!-- EMERGENCY TYPE -->
+
+    <div class="glass-card status-card emergency-card">
+
+        <div class="status-header">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            <span>
+
+                Emergency
+
+            </span>
+
+        </div>
+
+        <h2 id="emergency-type">
+
+            Waiting
+
+        </h2>
+
+        <small>
+
+            AI Detection
+
+        </small>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+                RISK SCORE
+=================================================== -->
+
+<section class="glass-card score-section">
+
+    <div class="score-left">
+
+        <h2>
+
+            AI Health Risk Score
+
+        </h2>
+
+        <h1>
+
+            <span id="risk-score">
+
+                0
+
+            </span>
+
+            <small>
+
+                /10
+
+            </small>
+
+        </h1>
+
+    </div>
+
+    <div class="score-right">
+
+        <div class="risk-progress">
+
+            <div id="score-fill" class="risk-fill"></div>
+
+        </div>
+
+        <p>
+
+            Intelligent AI Risk Assessment based on Heart Rate, SpO₂,
+            Temperature, Motion Sensor, GPS and Fall Detection.
+
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+           QUICK STATUS PANELS
+=================================================== -->
+
+<section class="quick-grid">
+
+    <!-- WiFi -->
+
+    <div class="mini-card">
+
+        <i class="fa-solid fa-wifi"></i>
+
+        <h3>
+
+            Device
+
+        </h3>
+
+        <p id="device-status">
+
+            Connected
+
+        </p>
+
+    </div>
+
+    <!-- GPS -->
+
+    <div class="mini-card">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        <h3>
+
+            GPS
+
+        </h3>
+
+        <p id="gps-status">
+
+            Active
+
+        </p>
+
+    </div>
+
+    <!-- SENSOR -->
+
+    <div class="mini-card">
+
+        <i class="fa-solid fa-microchip"></i>
+
+        <h3>
+
+            Sensors
+
+        </h3>
+
+        <p>
+
+            MAX30102 · DHT · MPU6050
+
+        </p>
+
+    </div>
+
+    <!-- AI -->
+
+    <div class="mini-card">
+
+        <i class="fa-solid fa-robot"></i>
+
+        <h3>
+
+            AI Engine
+
+        </h3>
+
+        <p>
+
+            Online
+
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+        SECTION 3 STARTS HERE
+=================================================== -->
+  <!-- ==================================================
+        CONTENT GRID
+=================================================== -->
+
+<section class="content-grid">
+
+    <!-- ==========================================
+                AI ANALYSIS PANEL
+    =========================================== -->
+
+    <div class="glass-card ai-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title">
+
+                <div class="panel-icon ai-icon">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="panel-label">
+                        Artificial Intelligence
+                    </span>
+
+                    <h2>
+                        Health Intelligence Summary
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="ai-status">
+
+                <span class="pulse-dot"></span>
+
+                ANALYZING
+
+            </div>
+
+        </div>
+
+        <!-- AI SUMMARY -->
+
+        <div class="summary-box">
+
+            <p id="summary">
+
+                Waiting for ESP32 sensor data...
+
+            </p>
+
+        </div>
+
+        <!-- ======================================
+                ANALYSIS CARDS
+        ======================================= -->
+
+        <div class="analysis-grid">
+
+            <!-- PRIORITY -->
+
+            <div class="analysis-card">
+
+                <div class="analysis-head">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    <h3>
+
+                        Priority Actions
+
+                    </h3>
+
+                </div>
+
+                <ul id="priority-actions">
+
+                </ul>
+
+            </div>
+
+            <!-- RECOMMENDATIONS -->
+
+            <div class="analysis-card">
+
+                <div class="analysis-head">
+
+                    <i class="fa-solid fa-user-doctor"></i>
+
+                    <h3>
+
+                        Recommendations
+
+                    </h3>
+
+                </div>
+
+                <ul id="recommendations">
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <!-- ======================================
+                OBSERVATIONS
+        ======================================= -->
+
+        <div class="observations">
+
+            <div class="analysis-head">
+
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+                <h3>
+
+                    AI Observations
+
+                </h3>
+
+            </div>
+
+            <div id="observations" class="chip-container">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+                GPS PANEL
+    =========================================== -->
+
+    <aside class="glass-card location-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title">
+
+                <div class="panel-icon gps-icon">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="panel-label">
+
+                        GPS Tracking
+
+                    </span>
+
+                    <h2>
+
+                        Live Patient Location
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MAP PLACEHOLDER -->
+
+        <div class="gps-preview">
+
+            <i class="fa-solid fa-map-location-dot"></i>
+
+        </div>
+
+        <!-- COORDINATES -->
+
+        <div class="gps-info">
+
+            <div class="gps-item">
+
+                <i class="fa-solid fa-location-crosshairs"></i>
+
+                <div>
+
+                    <small>
+
+                        Coordinates
+
+                    </small>
+
+                    <p id="coords">
+
+                        Waiting for GPS...
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MAP BUTTON -->
+
+        <a id="map-link"
+           class="map-button disabled"
+           href="#"
+           target="_blank"
+           rel="noreferrer">
+
+            <i class="fa-solid fa-map"></i>
+
+            Open Live Google Map
+
+        </a>
+
+        <!-- SENSOR VALUES -->
+
+        <div class="sensor-grid">
+
+            <div class="sensor-box">
+
+                <i class="fa-solid fa-arrows-up-down-left-right"></i>
+
+                <span>
+
+                    Acceleration
+
+                </span>
+
+                <h3 id="acc-magnitude">
+
+                    --
+
+                </h3>
+
+            </div>
+
+            <div class="sensor-box">
+
+                <i class="fa-solid fa-rotate"></i>
+
+                <span>
+
+                    Gyroscope
+
+                </span>
+
+                <h3 id="gyro-magnitude">
+
+                    --
+
+                </h3>
+
+            </div>
+
+        </div>
+
+        <!-- DEVICE HEALTH -->
+
+        <div class="device-health">
+
+            <div class="device-item">
+
+                <span>
+
+                    Wi-Fi
+
+                </span>
+
+                <strong>
+
+                    Connected
+
+                </strong>
+
+            </div>
+
+            <div class="device-item">
+
+                <span>
+
+                    ESP32
+
+                </span>
+
+                <strong>
+
+                    Online
+
+                </strong>
+
+            </div>
+
+            <div class="device-item">
+
+                <span>
+
+                    GPS
+
+                </span>
+
+                <strong id="gps-status">
+
+                    Active
+
+                </strong>
+
+            </div>
+
+            <div class="device-item">
+
+                <span>
+
+                    AI Engine
+
+                </span>
+
+                <strong>
+
+                    Running
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+</section>
+
+<!-- ==================================================
+            LIVE ANALYTICS HEADER
+=================================================== -->
+
+<section class="analytics-header">
+
+    <div>
+
+        <span class="panel-label">
+
+            Live Analytics
+
+        </span>
+
+        <h2>
+
+            Patient Health Trends
+
+        </h2>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+        SECTION 4 STARTS HERE
+=================================================== -->
+  <!-- ==================================================
+            LIVE ANALYTICS CHARTS
+=================================================== -->
+
+<section class="charts-grid">
+
+    <!-- ================= HEART RATE ================= -->
+
+    <div class="glass-card chart-card">
+
+        <div class="chart-header">
+
+            <div class="chart-title">
+
+                <i class="fa-solid fa-heart-pulse"></i>
+
+                <div>
+
+                    <span>Live Monitoring</span>
+
+                    <h3>Heart Rate Trend</h3>
+
+                </div>
+
+            </div>
+
+            <div class="live-badge">
+
+                <span class="pulse-dot"></span>
+
+                LIVE
+
+            </div>
+
+        </div>
+
+        <canvas id="heartChart" height="120"></canvas>
+
+    </div>
+
+    <!-- ================= SpO2 ================= -->
+
+    <div class="glass-card chart-card">
+
+        <div class="chart-header">
+
+            <div class="chart-title">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <div>
+
+                    <span>Live Monitoring</span>
+
+                    <h3>Blood Oxygen Trend</h3>
+
+                </div>
+
+            </div>
+
+            <div class="live-badge">
+
+                <span class="pulse-dot"></span>
+
+                LIVE
+
+            </div>
+
+        </div>
+
+        <canvas id="spo2Chart" height="120"></canvas>
+
+    </div>
+
+    <!-- ================= TEMPERATURE ================= -->
+
+    <div class="glass-card chart-card">
+
+        <div class="chart-header">
+
+            <div class="chart-title">
+
+                <i class="fa-solid fa-temperature-three-quarters"></i>
+
+                <div>
+
+                    <span>Live Monitoring</span>
+
+                    <h3>Temperature Trend</h3>
+
+                </div>
+
+            </div>
+
+            <div class="live-badge">
+
+                <span class="pulse-dot"></span>
+
+                LIVE
+
+            </div>
+
+        </div>
+
+        <canvas id="tempChart" height="120"></canvas>
+
+    </div>
+
+    <!-- ================= AI RISK ================= -->
+
+    <div class="glass-card chart-card">
+
+        <div class="chart-header">
+
+            <div class="chart-title">
+
+                <i class="fa-solid fa-brain"></i>
+
+                <div>
+
+                    <span>Artificial Intelligence</span>
+
+                    <h3>Risk Score Trend</h3>
+
+                </div>
+
+            </div>
+
+            <div class="live-badge">
+
+                <span class="pulse-dot"></span>
+
+                LIVE
+
+            </div>
+
+        </div>
+
+        <canvas id="riskChart" height="120"></canvas>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+            SENSOR STATUS PANEL
+=================================================== -->
+
+<section class="sensor-section">
+
+    <div class="glass-card sensor-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title">
+
+                <div class="panel-icon">
+
+                    <i class="fa-solid fa-microchip"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="panel-label">
+
+                        Hardware Monitoring
+
+                    </span>
+
+                    <h2>
+
+                        Sensor Status
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="sensor-status-grid">
+
+            <div class="sensor-status-card">
+
+                <i class="fa-solid fa-heart"></i>
+
+                <h3>
+
+                    MAX30102
+
+                </h3>
+
+                <span class="online">
+
+                    ● Connected
+
+                </span>
+
+            </div>
+
+            <div class="sensor-status-card">
+
+                <i class="fa-solid fa-temperature-half"></i>
+
+                <h3>
+
+                    Temperature
+
+                </h3>
+
+                <span class="online">
+
+                    ● Connected
+
+                </span>
+
+            </div>
+
+            <div class="sensor-status-card">
+
+                <i class="fa-solid fa-person-falling"></i>
+
+                <h3>
+
+                    MPU6050
+
+                </h3>
+
+                <span class="online">
+
+                    ● Connected
+
+                </span>
+
+            </div>
+
+            <div class="sensor-status-card">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <h3>
+
+                    GPS Module
+
+                </h3>
+
+                <span class="online">
+
+                    ● Connected
+
+                </span>
+
+            </div>
+
+            <div class="sensor-status-card">
+
+                <i class="fa-solid fa-wifi"></i>
+
+                <h3>
+
+                    Wi-Fi
+
+                </h3>
+
+                <span class="online">
+
+                    ● Connected
+
+                </span>
+
+            </div>
+
+            <div class="sensor-status-card">
+
+                <i class="fa-solid fa-robot"></i>
+
+                <h3>
+
+                    AI Engine
+
+                </h3>
+
+                <span class="online">
+
+                    ● Running
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+            HEALTH INDICATORS
+=================================================== -->
+
+<section class="indicator-grid">
+
+    <div class="glass-card indicator-card">
+
+        <div class="circle heart-circle">
+
+            <i class="fa-solid fa-heart-pulse"></i>
+
+        </div>
+
+        <h3>
+
+            Heart Condition
+
+        </h3>
+
+        <h2 id="heart-condition">
+
+            NORMAL
+
+        </h2>
+
+    </div>
+
+    <div class="glass-card indicator-card">
+
+        <div class="circle oxygen-circle">
+
+            <i class="fa-solid fa-lungs"></i>
+
+        </div>
+
+        <h3>
+
+            Oxygen Level
+
+        </h3>
+
+        <h2 id="oxygen-condition">
+
+            GOOD
+
+        </h2>
+
+    </div>
+
+    <div class="glass-card indicator-card">
+
+        <div class="circle temp-circle">
+
+            <i class="fa-solid fa-temperature-three-quarters"></i>
+
+        </div>
+
+        <h3>
+
+            Body Temperature
+
+        </h3>
+
+        <h2 id="temp-condition">
+
+            NORMAL
+
+        </h2>
+
+    </div>
+
+    <div class="glass-card indicator-card">
+
+        <div class="circle ai-circle">
+
+            <i class="fa-solid fa-brain"></i>
+
+        </div>
+
+        <h3>
+
+            Overall Health
+
+        </h3>
+
+        <h2 id="overall-health">
+
+            STABLE
+
+        </h2>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+        SECTION 5 STARTS HERE
+=================================================== -->
+  <!-- ==================================================
+            EMERGENCY CONTROL CENTER
+=================================================== -->
+
+<section class="emergency-section">
+
+    <div class="glass-card emergency-dashboard">
+
+        <div class="panel-header">
+
+            <div class="panel-title">
+
+                <div class="panel-icon emergency-icon">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="panel-label">
+
+                        Emergency Monitoring
+
+                    </span>
+
+                    <h2>
+
+                        AI Emergency Control Center
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div id="emergency-banner" class="emergency-banner safe">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Patient Safe
+
+            </div>
+
+        </div>
+
+        <div class="emergency-grid">
+
+            <div class="emergency-card">
+
+                <i class="fa-solid fa-heart-circle-check"></i>
+
+                <h3>
+
+                    Patient Status
+
+                </h3>
+
+                <h1 id="patient-status">
+
+                    STABLE
+
+                </h1>
+
+            </div>
+
+            <div class="emergency-card">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <h3>
+
+                    Emergency Level
+
+                </h3>
+
+                <h1 id="emergency-level">
+
+                    LOW
+
+                </h1>
+
+            </div>
+
+            <div class="emergency-card">
+
+                <i class="fa-solid fa-person-falling"></i>
+
+                <h3>
+
+                    Fall Detection
+
+                </h3>
+
+                <h1 id="fall-status">
+
+                    NO
+
+                </h1>
+
+            </div>
+
+            <div class="emergency-card">
+
+                <i class="fa-solid fa-satellite-dish"></i>
+
+                <h3>
+
+                    GPS Status
+
+                </h3>
+
+                <h1 id="gps-health">
+
+                    ACTIVE
+
+                </h1>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+                ALERT HISTORY
+=================================================== -->
+
+<section class="glass-card">
+
+    <div class="panel-header">
+
+        <div class="panel-title">
+
+            <div class="panel-icon">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+            </div>
+
+            <div>
+
+                <span class="panel-label">
+
+                    Timeline
+
+                </span>
+
+                <h2>
+
+                    Emergency Alert History
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div id="history-count" class="history-counter">
+
+            0 Alerts
+
+        </div>
+
+    </div>
+
+    <div id="history" class="history-container">
+
+        No alerts received.
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+                PATIENT INFORMATION
+=================================================== -->
+
+<section class="patient-grid">
+
+    <div class="glass-card patient-card">
+
+        <div class="panel-header">
+
+            <div class="panel-title">
+
+                <div class="panel-icon">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="panel-label">
+
+                        Patient Profile
+
+                    </span>
+
+                    <h2>
+
+                        Live Patient Information
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="patient-table">
+
+            <div class="patient-item">
+
+                <span>Patient ID</span>
+
+                <strong>001</strong>
+
+            </div>
+
+            <div class="patient-item">
+
+                <span>Name</span>
+
+                <strong>Demo Patient</strong>
+
+            </div>
+
+            <div class="patient-item">
+
+                <span>Age</span>
+
+                <strong>--</strong>
+
+            </div>
+
+            <div class="patient-item">
+
+                <span>Gender</span>
+
+                <strong>--</strong>
+
+            </div>
+
+            <div class="patient-item">
+
+                <span>Blood Group</span>
+
+                <strong>--</strong>
+
+            </div>
+
+            <div class="patient-item">
+
+                <span>Monitoring</span>
+
+                <strong>ACTIVE</strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ==================================================
+                    FOOTER
+=================================================== -->
+
+<footer class="dashboard-footer">
+
+    <div class="footer-left">
+
+        <i class="fa-solid fa-heart-pulse"></i>
+
+        <div>
+
+            <h2>
+
+                AI Health Monitoring System
+
+            </h2>
+
+            <p>
+
+                Smart Patient Monitoring using ESP32 & Artificial Intelligence
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="footer-right">
+
+        <h3>
+
+            Developed By
+
+        </h3>
+
+        <h2>
+
+            Danny Joel
+
+        </h2>
+
+        <p>
+
+            Nanjil Catholic School CBSE
+
+        </p>
+
+        <p>
+
+            Vazhuthalampallam, Kanyakumari District
+
+        </p>
+
+        <p>
+
+            Academic Year 2026–2027
+
+        </p>
+
+    </div>
+
+</footer>
+
+</div>
+<!-- END OF MAIN CONTAINER -->
+
+<!-- ==================================================
+            JAVASCRIPT STARTS HERE
+=================================================== -->
+
+<script>
+
+const setText = (id, value) => {
+    const element = document.getElementById(id);
+    if (element)
+        element.textContent = value ?? "--";
+};
+
+const heartHistory = [];
+const spo2History = [];
+const tempHistory = [];
+const riskHistory = [];
+const labels = [];
+
+/*
+==================================================
+
+SECTION 6 WILL CONTINUE FROM HERE
+
+It contains:
+
+✔ Complete JavaScript
+
+✔ Chart.js initialization
+
+✔ Fetch API (/api/latest)
+
+✔ Live Graph Updates
+
+✔ AI Status Update
+
+✔ GPS Update
+
+✔ Alert History
+
+✔ Emergency Animation
+
+✔ Risk Bar Animation
+
+✔ Auto Refresh every 3 seconds
+
+✔ Closing </script>
 </body>
+</html>
+
+==================================================
+*/
+/*=========================================================
+            CHART.JS INITIALIZATION
+=========================================================*/
+
+const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+        duration: 800
+    },
+    interaction: {
+        intersect: false,
+        mode: "index"
+    },
+    plugins: {
+        legend: {
+            display: false
+        }
+    },
+    scales: {
+        x: {
+            ticks: {
+                color: "#ffffff"
+            },
+            grid: {
+                color: "rgba(255,255,255,0.08)"
+            }
+        },
+        y: {
+            ticks: {
+                color: "#ffffff"
+            },
+            grid: {
+                color: "rgba(255,255,255,0.08)"
+            }
+        }
+    }
+};
+
+const heartChart = new Chart(
+    document.getElementById("heartChart"),
+    {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Heart Rate",
+                data: heartHistory,
+                borderColor: "#ff4d6d",
+                backgroundColor: "rgba(255,77,109,0.15)",
+                fill: true,
+                tension: .4,
+                borderWidth: 3
+            }]
+        },
+        options: chartOptions
+    }
+);
+
+const spo2Chart = new Chart(
+    document.getElementById("spo2Chart"),
+    {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "SpO₂",
+                data: spo2History,
+                borderColor: "#00d4ff",
+                backgroundColor: "rgba(0,212,255,.15)",
+                fill: true,
+                tension: .4,
+                borderWidth: 3
+            }]
+        },
+        options: chartOptions
+    }
+);
+
+const tempChart = new Chart(
+    document.getElementById("tempChart"),
+    {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Temperature",
+                data: tempHistory,
+                borderColor: "#ffa502",
+                backgroundColor: "rgba(255,165,2,.15)",
+                fill: true,
+                tension: .4,
+                borderWidth: 3
+            }]
+        },
+        options: chartOptions
+    }
+);
+
+const riskChart = new Chart(
+    document.getElementById("riskChart"),
+    {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Risk Score",
+                data: riskHistory,
+                borderColor: "#7d5fff",
+                backgroundColor: "rgba(125,95,255,.15)",
+                fill: true,
+                tension: .4,
+                borderWidth: 3
+            }]
+        },
+        options: chartOptions
+    }
+);
+
+/*=========================================================
+                HELPER FUNCTIONS
+=========================================================*/
+
+function pushValue(array, value) {
+
+    array.push(value);
+
+    if(array.length>20)
+        array.shift();
+
+}
+
+function pushLabel(){
+
+    labels.push(
+        new Date().toLocaleTimeString()
+    );
+
+    if(labels.length>20)
+        labels.shift();
+
+}
+
+function updateCharts(){
+
+    heartChart.update();
+
+    spo2Chart.update();
+
+    tempChart.update();
+
+    riskChart.update();
+
+}
+
+function renderList(id,data){
+
+    const list=document.getElementById(id);
+
+    list.innerHTML="";
+
+    (data||[]).forEach(item=>{
+
+        const li=document.createElement("li");
+
+        li.innerHTML=
+        `<i class="fa-solid fa-circle-check"></i> ${item}`;
+
+        list.appendChild(li);
+
+    });
+
+}
+
+function renderChips(id,data){
+
+    const box=document.getElementById(id);
+
+    box.innerHTML="";
+
+    (data||[]).forEach(item=>{
+
+        const chip=document.createElement("span");
+
+        chip.className="chip";
+
+        chip.textContent=item;
+
+        box.appendChild(chip);
+
+    });
+
+}
+
+/*=========================================================
+            LOAD DASHBOARD
+=========================================================*/
+
+async function loadDashboard(){
+
+try{
+
+const response=await fetch("/api/latest");
+
+const payload=await response.json();
+
+const data=payload.data||{};
+
+const analysis=payload.analysis||{};
+
+const history=payload.history||[];
+
+const vitals=analysis.vitals||{};
+
+const riskScore=Number(
+analysis.risk_score||0
+);
+
+setText("status",data.status||"WAITING");
+
+setText("risk-level",
+analysis.risk_level||"LOW");
+
+setText("confidence",
+analysis.confidence||"--");
+
+setText("risk-score",
+riskScore);
+
+setText("summary",
+analysis.summary||
+"Waiting for data");
+
+setText("heart-rate",
+data.heart_rate);
+
+setText("spo2",
+data.spo2);
+
+setText("temperature",
+data.temperature);
+
+setText("coords",
+
+data.latitude && data.longitude ?
+
+`${data.latitude},
+${data.longitude}`
+
+:
+
+"No GPS Data"
+
+);
+
+setText("received-at",
+
+data.received_at ?
+
+new Date(
+data.received_at
+).toLocaleString()
+
+:
+
+"Waiting"
+
+);
+
+setText("heart-note",
+vitals.heart_rate?.text);
+
+setText("spo2-note",
+vitals.spo2?.text);
+
+setText("temperature-note",
+vitals.temperature?.text);
+
+setText("motion-note",
+vitals.motion?.text);
+
+renderList(
+"priority-actions",
+analysis.priority_actions
+);
+
+renderList(
+"recommendations",
+analysis.recommendations
+);
+
+renderChips(
+"observations",
+analysis.observations
+);
+
+document.getElementById("score-fill")
+.style.width=(riskScore*10)+"%";
+
+pushLabel();
+
+pushValue(
+heartHistory,
+Number(data.heart_rate||0)
+);
+
+pushValue(
+spo2History,
+Number(data.spo2||0)
+);
+
+pushValue(
+tempHistory,
+Number(data.temperature||0)
+);
+
+pushValue(
+riskHistory,
+riskScore
+);
+
+updateCharts();
+/*=========================================================
+            HISTORY TIMELINE
+=========================================================*/
+
+const historyBox = document.getElementById("history");
+const historyCount = document.getElementById("history-count");
+
+historyCount.textContent = `${history.length} Alerts`;
+
+historyBox.innerHTML = "";
+
+if (history.length === 0) {
+
+    historyBox.className = "history-container empty";
+
+    historyBox.innerHTML = `
+        <div class="empty-history">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <h3>No Emergency Alerts</h3>
+
+            <p>System is monitoring the patient continuously.</p>
+
+        </div>
+    `;
+
+} else {
+
+    historyBox.className = "history-container";
+
+    history.forEach(event => {
+
+        const card = document.createElement("div");
+
+        card.className = "history-card";
+
+        card.innerHTML = `
+
+            <div class="history-left">
+
+                <div class="history-icon">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>${event.status}</h3>
+
+                    <p>${event.summary}</p>
+
+                    <small>
+
+                        ${new Date(event.time).toLocaleString()}
+
+                    </small>
+
+                </div>
+
+            </div>
+
+            <div class="history-right">
+
+                <span class="risk-badge">
+
+                    ${event.risk_level}
+
+                </span>
+
+                ${
+                    event.map_link ?
+
+                    `<a href="${event.map_link}"
+                    target="_blank"
+                    class="history-map">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Map
+
+                    </a>`
+
+                    :
+
+                    ""
+                }
+
+            </div>
+
+        `;
+
+        historyBox.appendChild(card);
+
+    });
+
+}
+
+/*=========================================================
+            EMERGENCY PANEL
+=========================================================*/
+
+const banner =
+document.getElementById("emergency-banner");
+
+const level =
+(analysis.risk_level || "").toUpperCase();
+
+const patient =
+document.getElementById("patient-status");
+
+const emergency =
+document.getElementById("emergency-level");
+
+const fall =
+document.getElementById("fall-status");
+
+const gps =
+document.getElementById("gps-health");
+
+patient.textContent =
+data.status || "UNKNOWN";
+
+emergency.textContent =
+level;
+
+fall.textContent =
+data.fall_detected ? "YES" : "NO";
+
+gps.textContent =
+data.latitude ? "ACTIVE" : "OFFLINE";
+
+banner.classList.remove(
+"safe",
+"warning",
+"danger"
+);
+
+if(level==="HIGH"){
+
+    banner.classList.add("danger");
+
+    banner.innerHTML=`
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        HIGH RISK DETECTED
+    `;
+
+}
+else if(level==="MEDIUM"){
+
+    banner.classList.add("warning");
+
+    banner.innerHTML=`
+        <i class="fa-solid fa-circle-exclamation"></i>
+        MEDIUM RISK
+    `;
+
+}
+else{
+
+    banner.classList.add("safe");
+
+    banner.innerHTML=`
+        <i class="fa-solid fa-circle-check"></i>
+        PATIENT SAFE
+    `;
+
+}
+
+/*=========================================================
+            CONDITION LABELS
+=========================================================*/
+
+document.getElementById("heart-condition")
+.textContent =
+Number(data.heart_rate)>100 ?
+"HIGH" :
+"NORMAL";
+
+document.getElementById("oxygen-condition")
+.textContent =
+Number(data.spo2)>=95 ?
+"GOOD" :
+"LOW";
+
+document.getElementById("temp-condition")
+.textContent =
+Number(data.temperature)>=38 ?
+"FEVER" :
+"NORMAL";
+
+document.getElementById("overall-health")
+.textContent =
+level==="HIGH" ?
+"CRITICAL" :
+(level==="MEDIUM" ?
+"OBSERVE" :
+"STABLE");
+
+/*=========================================================
+            GPS BUTTON
+=========================================================*/
+
+const mapButton =
+document.getElementById("map-link");
+
+if(data.map_link){
+
+    mapButton.href =
+    data.map_link;
+
+    mapButton.classList.remove(
+    "disabled"
+    );
+
+}
+else{
+
+    mapButton.href="#";
+
+    mapButton.classList.add(
+    "disabled"
+    );
+
+}
+
+/*=========================================================
+            CONNECTION STATUS
+=========================================================*/
+
+const connection =
+document.getElementById("connection");
+
+if(data.received_at){
+
+    connection.innerHTML=`
+        <span class="live-dot"></span>
+        LIVE
+    `;
+
+}
+else{
+
+    connection.innerHTML=`
+        <span class="live-dot"></span>
+        WAITING
+    `;
+
+}
+
+/*=========================================================
+            ERROR HANDLING
+=========================================================*/
+
+}
+catch(error){
+
+    console.error("Dashboard Error :", error);
+
+    document.getElementById("connection").innerHTML=`
+        <span class="live-dot offline"></span>
+        OFFLINE
+    `;
+
+    document.getElementById("received-at").textContent=
+    "Unable to connect to ESP32";
+
+}
+
+}
+
+/*=========================================================
+            AUTO REFRESH
+=========================================================*/
+
+loadDashboard();
+
+setInterval(loadDashboard,3000);
+
+/*=========================================================
+            OPTIONAL LIVE CLOCK
+=========================================================*/
+
+setInterval(()=>{
+
+const now=new Date();
+
+const time=now.toLocaleTimeString();
+
+const date=now.toLocaleDateString();
+
+const clock=document.getElementById("live-clock");
+
+if(clock){
+
+clock.innerHTML=`
+<i class="fa-solid fa-clock"></i>
+${date} ${time}
+`;
+
+}
+
+},1000);
+
+/*=========================================================
+            FLOATING BACKGROUND PARTICLES
+=========================================================*/
+
+const particles=document.querySelectorAll(".particles span");
+
+particles.forEach((particle,index)=>{
+
+particle.style.left=Math.random()*100+"%";
+
+particle.style.animationDuration=
+(8+Math.random()*10)+"s";
+
+particle.style.animationDelay=
+(Math.random()*6)+"s";
+
+particle.style.opacity=
+0.2+Math.random()*0.8;
+
+});
+
+/*=========================================================
+            CARD HOVER EFFECT
+=========================================================*/
+
+document.querySelectorAll(".glass-card").forEach(card=>{
+
+card.addEventListener("mouseenter",()=>{
+
+card.style.transform="translateY(-8px) scale(1.02)";
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.transform="translateY(0px) scale(1)";
+
+});
+
+});
+
+/*=========================================================
+            RISK BAR COLOR
+=========================================================*/
+
+function updateRiskColor(score){
+
+const bar=document.getElementById("score-fill");
+
+if(!bar) return;
+
+if(score<=3){
+
+bar.style.background=
+"linear-gradient(90deg,#00e676,#00c853)";
+
+}
+else if(score<=6){
+
+bar.style.background=
+"linear-gradient(90deg,#ffd54f,#ff9800)";
+
+}
+else{
+
+bar.style.background=
+"linear-gradient(90deg,#ff1744,#d50000)";
+
+}
+
+}
+
+setInterval(()=>{
+
+const score=parseFloat(
+document.getElementById("risk-score").textContent
+)||0;
+
+updateRiskColor(score);
+
+},1000);
+
+/*=========================================================
+            HEART ICON ANIMATION
+=========================================================*/
+
+setInterval(()=>{
+
+document.querySelectorAll(".heartbeat").forEach(icon=>{
+
+icon.classList.toggle("beat");
+
+});
+
+},800);
+
+/*=========================================================
+            PAGE FADE-IN
+=========================================================*/
+
+window.addEventListener("load",()=>{
+
+document.body.classList.add("loaded");
+
+});
+
+/*=========================================================
+            END OF JAVASCRIPT
+=========================================================*/
+
+</script>
+
+</body>
+
 </html>
