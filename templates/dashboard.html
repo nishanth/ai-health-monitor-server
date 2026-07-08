@@ -1,156 +1,2148 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Health Monitor Dashboard</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+
+AI Based Smart Health Monitoring System
+
+</title>
+
+<!-- Bootstrap -->
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<!-- Font Awesome -->
+
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+rel="stylesheet">
+
+<!-- Google Font -->
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<!-- Custom CSS -->
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 <body>
-  <main class="shell">
-    <header class="topbar">
-      <div>
-        <h1>AI Health Monitor</h1>
-        <p>Live ESP32 patient monitoring dashboard</p>
-      </div>
-      <div id="connection" class="badge waiting">Waiting</div>
-    </header>
 
-    <section class="status-panel">
-      <div>
-        <span class="label">Current Status</span>
-        <strong id="status">WAITING</strong>
-      </div>
-      <div>
-        <span class="label">AI Risk Level</span>
-        <strong id="risk-level">WAITING</strong>
-      </div>
-      <div>
-        <span class="label">Last Update</span>
-        <strong id="received-at">No data yet</strong>
-      </div>
-    </section>
+<div class="container-fluid p-0">
 
-    <section class="grid">
-      <article class="metric">
-        <span>Heart Rate</span>
-        <strong id="heart-rate">--</strong>
-        <small>BPM</small>
-      </article>
-      <article class="metric">
-        <span>SpO2</span>
-        <strong id="spo2">--</strong>
-        <small>%</small>
-      </article>
-      <article class="metric">
-        <span>Temperature</span>
-        <strong id="temperature">--</strong>
-        <small>deg C</small>
-      </article>
-      <article class="metric">
-        <span>Motion</span>
-        <strong id="motion">--</strong>
-        <small>MPU6050</small>
-      </article>
-    </section>
+<!-- ===================================================== -->
+<!-- HEADER -->
+<!-- ===================================================== -->
 
-    <section class="split">
-      <article class="panel">
-        <h2>AI Analysis</h2>
-        <p id="summary">Waiting for ESP32 data.</p>
-        <h3>Recommendations</h3>
-        <ul id="recommendations"></ul>
-      </article>
+<header class="hero-header">
 
-      <article class="panel">
-        <h2>Location</h2>
-        <p id="coords">No GPS data yet.</p>
-        <a id="map-link" class="button disabled" href="#" target="_blank" rel="noreferrer">Open Map</a>
-      </article>
-    </section>
+<div class="container">
 
-    <section class="panel">
-      <h2>Alert History</h2>
-      <div id="history" class="history empty">No alerts received yet.</div>
-    </section>
-  </main>
+<div class="row align-items-center">
 
-  <script>
-    const setText = (id, value) => {
-      document.getElementById(id).textContent = value ?? "--";
-    };
+<div class="col-lg-8">
 
-    const formatTime = (value) => {
-      if (!value) return "No data yet";
-      return new Date(value).toLocaleString();
-    };
+<h1 class="project-title">
 
-    async function loadDashboard() {
-      try {
-        const response = await fetch("/api/latest");
-        const payload = await response.json();
-        const data = payload.data || {};
-        const analysis = payload.analysis || {};
-        const history = payload.history || [];
+<i class="fa-solid fa-heart-pulse text-danger"></i>
 
-        setText("status", data.status || "WAITING");
-        setText("risk-level", analysis.risk_level || "WAITING");
-        setText("received-at", formatTime(data.received_at));
-        setText("heart-rate", data.heart_rate);
-        setText("spo2", data.spo2);
-        setText("temperature", data.temperature);
-        setText("motion", data.mpu_ready === false ? "ERROR" : data.fall_detected ? "FALL" : "OK");
-        setText("summary", analysis.summary || "Waiting for ESP32 data.");
-        setText("coords", data.latitude && data.longitude ? `${data.latitude}, ${data.longitude}` : "No GPS data yet.");
+AI Based Smart Health Monitoring System
 
-        const connection = document.getElementById("connection");
-        connection.textContent = data.received_at ? "Live" : "Waiting";
-        connection.className = data.received_at ? "badge live" : "badge waiting";
+</h1>
 
-        const mapLink = document.getElementById("map-link");
-        if (data.map_link) {
-          mapLink.href = data.map_link;
-          mapLink.classList.remove("disabled");
-        } else {
-          mapLink.href = "#";
-          mapLink.classList.add("disabled");
-        }
+<h4 class="project-subtitle">
 
-        const recList = document.getElementById("recommendations");
-        recList.innerHTML = "";
-        (analysis.recommendations || []).forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item;
-          recList.appendChild(li);
-        });
+AI Powered Elderly & Patient Healthcare Platform
 
-        const historyBox = document.getElementById("history");
-        historyBox.innerHTML = "";
-        historyBox.className = history.length ? "history" : "history empty";
-        if (!history.length) {
-          historyBox.textContent = "No alerts received yet.";
-        } else {
-          history.forEach((event) => {
-            const item = document.createElement("div");
-            item.className = "history-item";
-            item.innerHTML = `
-              <strong>${event.status} - ${event.risk_level}</strong>
-              <span>${formatTime(event.time)}</span>
-              <p>${event.summary}</p>
-              ${event.map_link ? `<a href="${event.map_link}" target="_blank" rel="noreferrer">Map</a>` : ""}
-            `;
-            historyBox.appendChild(item);
-          });
-        }
-      } catch (error) {
-        const connection = document.getElementById("connection");
-        connection.textContent = "Offline";
-        connection.className = "badge danger";
-      }
-    }
+</h4>
 
-    loadDashboard();
-    setInterval(loadDashboard, 3000);
-  </script>
+</div>
+
+<div class="col-lg-4 text-lg-end">
+
+<div id="liveClock"
+class="live-clock">
+
+--:--:--
+
+</div>
+
+<div class="status-row">
+
+<span class="badge bg-success">
+
+ESP32 ONLINE
+
+</span>
+
+<span class="badge bg-primary">
+
+AI READY
+
+</span>
+
+<span class="badge bg-info">
+
+CLOUD CONNECTED
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+
+<!-- ===================================================== -->
+<!-- STUDENT INFORMATION -->
+<!-- ===================================================== -->
+
+<section class="student-section">
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-lg-6">
+
+<div class="student-card">
+
+<h5>
+
+<i class="fa-solid fa-user-graduate"></i>
+
+Student Details
+
+</h5>
+
+<table class="table table-borderless">
+
+<tr>
+
+<td>Name</td>
+
+<td>
+
+<b>Danny Joel</b>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Class</td>
+
+<td>
+
+Grade VII
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>School</td>
+
+<td>
+
+Nanjil Catholic School CBSE
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Place</td>
+
+<td>
+
+Vazhuthalampallam
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>District</td>
+
+<td>
+
+Kanyakumari District
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="col-lg-6">
+
+<div class="student-card">
+
+<h5>
+
+<i class="fa-solid fa-microchip"></i>
+
+Project Information
+
+</h5>
+
+<table class="table table-borderless">
+
+<tr>
+
+<td>Project</td>
+
+<td>
+
+AI Health Monitoring
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Controller</td>
+
+<td>
+
+ESP32
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Cloud</td>
+
+<td>
+
+Render Cloud
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Artificial Intelligence</td>
+
+<td>
+
+AI Doctor Engine
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Status</td>
+
+<td>
+
+<span class="badge bg-success">
+
+RUNNING
+
+</span>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- DASHBOARD START -->
+<!-- ===================================================== -->
+
+<div class="container mt-4">
+
+<div class="row g-4">
+  <!-- ===================================================== -->
+<!-- PATIENT PROFILE -->
+<!-- ===================================================== -->
+
+<div class="col-lg-4">
+
+<div class="dashboard-card patient-card">
+
+<div class="text-center">
+
+<i class="fa-solid fa-user-injured patient-icon"></i>
+
+<h3 id="patientName">
+
+Demo Patient
+
+</h3>
+
+<p class="text-muted">
+
+Patient ID :
+<span id="patientID">
+
+P001
+
+</span>
+
+</p>
+
+</div>
+
+<hr>
+
+<div class="row text-center">
+
+<div class="col-4">
+
+<h6>
+
+Age
+
+</h6>
+
+<h4 id="patientAge">
+
+72
+
+</h4>
+
+</div>
+
+<div class="col-4">
+
+<h6>
+
+Gender
+
+</h6>
+
+<h4 id="patientGender">
+
+Male
+
+</h4>
+
+</div>
+
+<div class="col-4">
+
+<h6>
+
+Blood
+
+</h6>
+
+<h4 id="bloodGroup">
+
+B+
+
+</h4>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="mt-3">
+
+<p>
+
+<i class="fa-solid fa-location-dot text-danger"></i>
+
+Location
+
+</p>
+
+<div id="patientLocation">
+
+Waiting for GPS...
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- VITAL SIGNS -->
+<!-- ===================================================== -->
+
+<div class="col-lg-8">
+
+<div class="row g-3">
+
+<!-- HEART RATE -->
+
+<div class="col-md-6">
+
+<div class="dashboard-card vital-card heart-card">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<h6>
+
+Heart Rate
+
+</h6>
+
+<h1 id="heartRate">
+
+--
+
+</h1>
+
+<p>BPM</p>
+
+</div>
+
+<div>
+
+<i class="fa-solid fa-heart-pulse vital-icon heartbeat"></i>
+
+</div>
+
+</div>
+
+<div class="progress">
+
+<div
+
+id="heartProgress"
+
+class="progress-bar bg-danger"
+
+style="width:0%">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- SpO2 -->
+
+<div class="col-md-6">
+
+<div class="dashboard-card vital-card spo2-card">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<h6>
+
+Blood Oxygen
+
+</h6>
+
+<h1 id="spo2">
+
+--
+
+</h1>
+
+<p>%</p>
+
+</div>
+
+<div>
+
+<i class="fa-solid fa-lungs vital-icon"></i>
+
+</div>
+
+</div>
+
+<div class="progress">
+
+<div
+
+id="spo2Progress"
+
+class="progress-bar bg-primary"
+
+style="width:0%">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- TEMPERATURE -->
+
+<div class="col-md-6">
+
+<div class="dashboard-card vital-card temp-card">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<h6>
+
+Temperature
+
+</h6>
+
+<h1 id="temperature">
+
+--
+
+</h1>
+
+<p>°C</p>
+
+</div>
+
+<div>
+
+<i class="fa-solid fa-temperature-three-quarters vital-icon"></i>
+
+</div>
+
+</div>
+
+<div class="progress">
+
+<div
+
+id="tempProgress"
+
+class="progress-bar bg-warning"
+
+style="width:0%">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- AI HEALTH SCORE -->
+
+<div class="col-md-6">
+
+<div class="dashboard-card vital-card score-card">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<h6>
+
+AI Health Score
+
+</h6>
+
+<h1 id="healthScore">
+
+100
+
+</h1>
+
+<p>%</p>
+
+</div>
+
+<div>
+
+<i class="fa-solid fa-robot vital-icon"></i>
+
+</div>
+
+</div>
+
+<div class="progress">
+
+<div
+
+id="healthProgress"
+
+class="progress-bar bg-success"
+
+style="width:100%">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- FALL + SOS + AI STATUS -->
+<!-- ===================================================== -->
+
+<div class="col-lg-12">
+
+<div class="row g-3">
+
+<div class="col-md-4">
+
+<div class="dashboard-card">
+
+<h5>
+
+<i class="fa-solid fa-person-falling"></i>
+
+Fall Detection
+
+</h5>
+
+<h2 id="fallStatus">
+
+SAFE
+
+</h2>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-4">
+
+<div class="dashboard-card">
+
+<h5>
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+Emergency SOS
+
+</h5>
+
+<h2 id="sosStatus">
+
+NORMAL
+
+</h2>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-4">
+
+<div class="dashboard-card">
+
+<h5>
+
+<i class="fa-solid fa-stethoscope"></i>
+
+AI Status
+
+</h5>
+
+<h2 id="riskLevel">
+
+NORMAL
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- ===================================================== -->
+<!-- AI DOCTOR + MEDICAL REPORT -->
+<!-- ===================================================== -->
+
+<div class="col-lg-8">
+
+<div class="dashboard-card ai-card">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<h3>
+
+<i class="fa-solid fa-user-doctor text-primary"></i>
+
+AI Doctor Assistant
+
+</h3>
+
+<span id="aiConfidence" class="badge bg-success">
+
+Confidence : 100%
+
+</span>
+
+</div>
+
+<hr>
+
+<h4 id="doctorDiagnosis">
+
+Patient is Healthy
+
+</h4>
+
+<p id="doctorSummary">
+
+All monitored parameters are within the safe operating range.
+
+</p>
+
+<hr>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<h6>
+
+<i class="fa-solid fa-heart-circle-check text-success"></i>
+
+Health Score
+
+</h6>
+
+<h2 id="doctorHealthScore">
+
+100%
+
+</h2>
+
+</div>
+
+<div class="col-md-6">
+
+<h6>
+
+<i class="fa-solid fa-wave-square text-primary"></i>
+
+Health Meter
+
+</h6>
+
+<h2 id="healthMeter">
+
+EXCELLENT
+
+</h2>
+
+</div>
+
+</div>
+
+<hr>
+
+<h5>
+
+<i class="fa-solid fa-lightbulb text-warning"></i>
+
+Future Prediction
+
+</h5>
+
+<p id="futurePrediction">
+
+Patient is expected to remain stable.
+
+</p>
+
+<hr>
+
+<h5>
+
+<i class="fa-solid fa-person-running text-success"></i>
+
+Next Recommended Action
+
+</h5>
+
+<p id="nextAction">
+
+Continue regular monitoring.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- AI MEDICAL REPORT -->
+<!-- ===================================================== -->
+
+<div class="col-lg-4">
+
+<div class="dashboard-card report-card">
+
+<h3>
+
+<i class="fa-solid fa-file-medical"></i>
+
+AI Medical Report
+
+</h3>
+
+<hr>
+
+<table class="table table-borderless">
+
+<tr>
+
+<td>
+
+Risk Level
+
+</td>
+
+<td>
+
+<span id="reportRisk"
+
+class="badge bg-success">
+
+NORMAL
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Emergency
+
+</td>
+
+<td id="emergencyType">
+
+Stable
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Emergency Level
+
+</td>
+
+<td id="emergencyLevel">
+
+0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+AI Confidence
+
+</td>
+
+<td id="confidence">
+
+100%
+
+</td>
+
+</tr>
+
+</table>
+
+<hr>
+
+<p>
+
+<b>
+
+Generated By
+
+</b>
+
+</p>
+
+<p>
+
+AI Health Assistant
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- RECOMMENDATIONS -->
+<!-- ===================================================== -->
+
+<div class="col-lg-6">
+
+<div class="dashboard-card">
+
+<h3>
+
+<i class="fa-solid fa-notes-medical text-success"></i>
+
+Recommendations
+
+</h3>
+
+<hr>
+
+<ul id="recommendationList"
+
+class="list-group">
+
+<li class="list-group-item">
+
+Waiting...
+
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- PRIORITY ACTION -->
+<!-- ===================================================== -->
+
+<div class="col-lg-6">
+
+<div class="dashboard-card">
+
+<h3>
+
+<i class="fa-solid fa-bell text-danger"></i>
+
+Priority Actions
+
+</h3>
+
+<hr>
+
+<ul id="priorityList"
+
+class="list-group">
+
+<li class="list-group-item">
+
+Waiting...
+
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- RECOVERY PLAN -->
+<!-- ===================================================== -->
+
+<div class="col-lg-12">
+
+<div class="dashboard-card">
+
+<h3>
+
+<i class="fa-solid fa-kit-medical text-primary"></i>
+
+Recovery Plan
+
+</h3>
+
+<hr>
+
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="recovery-box">
+
+💧
+
+<br>
+
+Drink Water
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="recovery-box">
+
+🛌
+
+<br>
+
+Take Rest
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="recovery-box">
+
+❤️
+
+<br>
+
+Monitor Health
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="recovery-box">
+
+🏥
+
+<br>
+
+Visit Hospital
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- EMERGENCY ALERT -->
+<!-- ===================================================== -->
+
+<div class="col-lg-12">
+
+<div
+
+id="emergencyBanner"
+
+class="dashboard-card bg-danger text-white text-center"
+
+style="display:none;">
+
+<h1>
+
+🚨 EMERGENCY ALERT 🚨
+
+</h1>
+
+<h3 id="emergencyMessage">
+
+Patient Requires Immediate Medical Attention
+
+</h3>
+
+</div>
+
+</div>
+<!-- ===================================================== -->
+<!-- GOOGLE MAP -->
+<!-- ===================================================== -->
+
+<div class="col-lg-8">
+
+<div class="dashboard-card">
+
+<div class="d-flex justify-content-between">
+
+<h3>
+
+<i class="fa-solid fa-map-location-dot text-danger"></i>
+
+Live Patient Location
+
+</h3>
+
+<a id="mapButton"
+
+target="_blank"
+
+class="btn btn-danger">
+
+Open Google Maps
+
+</a>
+
+</div>
+
+<hr>
+
+<iframe
+
+id="googleMap"
+
+width="100%"
+
+height="350"
+
+style="border-radius:15px;border:none;"
+
+loading="lazy"
+
+allowfullscreen
+
+src="https://maps.google.com/maps?q=11.1271,78.6569&z=15&output=embed">
+
+</iframe>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- DEVICE STATUS -->
+<!-- ===================================================== -->
+
+<div class="col-lg-4">
+
+<div class="dashboard-card">
+
+<h3>
+
+<i class="fa-solid fa-server text-success"></i>
+
+System Status
+
+</h3>
+
+<hr>
+
+<table class="table table-borderless">
+
+<tr>
+
+<td>
+
+ESP32
+
+</td>
+
+<td>
+
+<span id="deviceStatus"
+
+class="badge bg-success">
+
+ONLINE
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+WiFi
+
+</td>
+
+<td>
+
+<span id="wifiStatus"
+
+class="badge bg-success">
+
+CONNECTED
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Cloud
+
+</td>
+
+<td>
+
+<span id="cloudStatus"
+
+class="badge bg-primary">
+
+CONNECTED
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Render
+
+</td>
+
+<td>
+
+<span id="renderStatus"
+
+class="badge bg-info">
+
+RUNNING
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+AI Engine
+
+</td>
+
+<td>
+
+<span id="aiStatus"
+
+class="badge bg-warning text-dark">
+
+READY
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+GPS
+
+</td>
+
+<td>
+
+<span id="gpsStatus"
+
+class="badge bg-success">
+
+CONNECTED
+
+</span>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- DASHBOARD STATISTICS -->
+<!-- ===================================================== -->
+
+<div class="col-lg-12">
+
+<div class="dashboard-card">
+
+<h3>
+
+<i class="fa-solid fa-chart-column text-primary"></i>
+
+Health Statistics
+
+</h3>
+
+<hr>
+
+<div class="row text-center">
+
+<div class="col-md-3">
+
+<div class="stats-box">
+
+<h1 id="totalEvents">
+
+0
+
+</h1>
+
+<h6>
+
+Total Alerts
+
+</h6>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="stats-box">
+
+<h1 id="normalEvents">
+
+0
+
+</h1>
+
+<h6>
+
+Normal
+
+</h6>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="stats-box">
+
+<h1 id="warningEvents">
+
+0
+
+</h1>
+
+<h6>
+
+Warnings
+
+</h6>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="stats-box">
+
+<h1 id="criticalEvents">
+
+0
+
+</h1>
+
+<h6>
+
+Critical
+
+</h6>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- SENSOR STATUS -->
+<!-- ===================================================== -->
+
+<div class="col-lg-6">
+
+<div class="dashboard-card">
+
+<h3>
+
+<i class="fa-solid fa-microchip text-primary"></i>
+
+Sensor Status
+
+</h3>
+
+<hr>
+
+<table class="table table-hover">
+
+<tr>
+
+<td>
+
+MAX30102
+
+</td>
+
+<td>
+
+<span id="sensorMAX"
+
+class="badge bg-success">
+
+ACTIVE
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+DS18B20
+
+</td>
+
+<td>
+
+<span id="sensorTEMP"
+
+class="badge bg-success">
+
+ACTIVE
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+MPU6050
+
+</td>
+
+<td>
+
+<span id="sensorMPU"
+
+class="badge bg-success">
+
+ACTIVE
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+GPS Module
+
+</td>
+
+<td>
+
+<span id="sensorGPS"
+
+class="badge bg-success">
+
+ACTIVE
+
+</span>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- EVENT HISTORY -->
+<!-- ===================================================== -->
+
+<div class="col-lg-6">
+
+<div class="dashboard-card">
+
+<h3>
+
+<i class="fa-solid fa-clock-rotate-left text-danger"></i>
+
+Emergency History
+
+</h3>
+
+<hr>
+
+<div
+
+id="historyContainer"
+
+style="height:260px;overflow-y:auto;">
+
+<div class="alert alert-success">
+
+System Started Successfully
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- FOOTER -->
+<!-- ===================================================== -->
+
+<div class="col-lg-12">
+
+<div class="dashboard-card text-center">
+
+<h4>
+
+AI Based Smart Health Monitoring System
+
+</h4>
+
+<p>
+
+Developed By
+
+<b>
+
+Danny Joel
+
+</b>
+
+|
+
+Grade VII
+
+|
+
+Nanjil Catholic School CBSE
+
+|
+
+Vazhuthalampallam
+
+|
+
+Kanyakumari District
+
+</p>
+
+<p>
+
+ESP32 |
+
+Artificial Intelligence |
+
+IoT |
+
+Render Cloud |
+
+Healthcare
+
+</p>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+</div>
+<!-- ===================================================== -->
+<!-- LIVE HEALTH CHARTS -->
+<!-- ===================================================== -->
+
+<div class="col-lg-8">
+
+<div class="dashboard-card">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<h3>
+
+<i class="fa-solid fa-chart-line text-primary"></i>
+
+Live Health Trends
+
+</h3>
+
+<span class="badge bg-success">
+
+Real-Time AI Monitoring
+
+</span>
+
+</div>
+
+<hr>
+
+<div class="row">
+
+<div class="col-md-12 mb-4">
+
+<h6>
+
+❤️ Heart Rate Trend
+
+</h6>
+
+<canvas id="heartChart" height="120"></canvas>
+
+</div>
+
+<div class="col-md-12 mb-4">
+
+<h6>
+
+🩸 Blood Oxygen Trend
+
+</h6>
+
+<canvas id="spo2Chart" height="120"></canvas>
+
+</div>
+
+<div class="col-md-12">
+
+<h6>
+
+🌡 Temperature Trend
+
+</h6>
+
+<canvas id="tempChart" height="120"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- AI HEALTH METER -->
+<!-- ===================================================== -->
+
+<div class="col-lg-4">
+
+<div class="dashboard-card text-center">
+
+<h3>
+
+🤖 AI Health Meter
+
+</h3>
+
+<hr>
+
+<div class="health-circle">
+
+<div id="healthCircle">
+
+100%
+
+</div>
+
+</div>
+
+<hr>
+
+<h4 id="healthMeterStatus">
+
+EXCELLENT
+
+</h4>
+
+<p>
+
+Overall AI Health Assessment
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- AI PREDICTION -->
+<!-- ===================================================== -->
+
+<div class="col-lg-6">
+
+<div class="dashboard-card">
+
+<h3>
+
+🔮 AI Future Prediction
+
+</h3>
+
+<hr>
+
+<div class="timeline">
+
+<div class="timeline-item">
+
+<div class="timeline-icon">
+
+1
+
+</div>
+
+<div>
+
+<h6>
+
+Current Status
+
+</h6>
+
+<p id="currentPrediction">
+
+Patient Stable
+
+</p>
+
+</div>
+
+</div>
+
+<div class="timeline-item">
+
+<div class="timeline-icon">
+
+2
+
+</div>
+
+<div>
+
+<h6>
+
+Next 5 Minutes
+
+</h6>
+
+<p id="futurePredictionText">
+
+Health Expected to Remain Stable
+
+</p>
+
+</div>
+
+</div>
+
+<div class="timeline-item">
+
+<div class="timeline-icon">
+
+3
+
+</div>
+
+<div>
+
+<h6>
+
+AI Recommendation
+
+</h6>
+
+<p id="nextPrediction">
+
+Continue Monitoring
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- MEDICINE REMINDER -->
+<!-- ===================================================== -->
+
+<div class="col-lg-6">
+
+<div class="dashboard-card">
+
+<h3>
+
+💊 Medicine Reminder
+
+</h3>
+
+<hr>
+
+<table class="table table-hover">
+
+<tr>
+
+<td>
+
+Morning
+
+</td>
+
+<td>
+
+08:00 AM
+
+</td>
+
+<td>
+
+<span class="badge bg-success">
+
+Completed
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Afternoon
+
+</td>
+
+<td>
+
+02:00 PM
+
+</td>
+
+<td>
+
+<span class="badge bg-warning text-dark">
+
+Pending
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Night
+
+</td>
+
+<td>
+
+08:00 PM
+
+</td>
+
+<td>
+
+<span class="badge bg-secondary">
+
+Waiting
+
+</span>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- HOSPITAL INFORMATION -->
+<!-- ===================================================== -->
+
+<div class="col-lg-12">
+
+<div class="dashboard-card">
+
+<h3>
+
+🏥 Emergency Healthcare Information
+
+</h3>
+
+<hr>
+
+<div class="row text-center">
+
+<div class="col-md-3">
+
+<div class="hospital-box">
+
+🚑
+
+<h5>
+
+Emergency
+
+</h5>
+
+<p>
+
+108
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="hospital-box">
+
+📍
+
+<h5>
+
+Nearest Hospital
+
+</h5>
+
+<p id="nearestHospital">
+
+Government Hospital
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="hospital-box">
+
+📞
+
+<h5>
+
+Caregiver
+
+</h5>
+
+<p>
+
++91 XXXXX XXXXX
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="hospital-box">
+
+🌐
+
+<h5>
+
+Cloud Status
+
+</h5>
+
+<p>
+
+ONLINE
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- DASHBOARD END -->
+<!-- ===================================================== -->
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+
 </body>
+
 </html>
